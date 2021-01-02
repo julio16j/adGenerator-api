@@ -27,6 +27,8 @@ public class Usuario {
 	@Column(name = "isAdmin")
 	private Boolean isAdmin;
 	
+	public Usuario () {}
+	
 	public Usuario(UsuarioDTO dto) {
 		this.nome = dto.getNome();
 		this.email = dto.getEmail();
