@@ -1,5 +1,6 @@
 package com.adGeneratorApi.Dominio.Entidade;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,8 +14,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Imagem {
+public class Imagem implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5783533330142313854L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;

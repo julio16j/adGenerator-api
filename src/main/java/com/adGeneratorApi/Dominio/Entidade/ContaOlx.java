@@ -1,5 +1,6 @@
 package com.adGeneratorApi.Dominio.Entidade;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -8,8 +9,13 @@ import javax.persistence.Id;
 import com.adGeneratorApi.Dominio.Enum.Status;
 
 @Entity
-public class ContaOlx {
+public class ContaOlx implements Serializable{
 		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5477372506592201637L;
+
 	@Id
 	private String email;
 	

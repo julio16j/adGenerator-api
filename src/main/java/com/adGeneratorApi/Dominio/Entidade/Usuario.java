@@ -1,5 +1,6 @@
 package com.adGeneratorApi.Dominio.Entidade;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,8 +13,11 @@ import javax.persistence.OneToMany;
 import com.adGeneratorApi.Dominio.DTO.UsuarioDTO;
 
 @Entity
-public class Usuario {
+public class Usuario implements Serializable{
 	
+	private static final long serialVersionUID = -8939219162105153756L;
+
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;

@@ -1,5 +1,6 @@
 package com.adGeneratorApi.Dominio.Entidade;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -13,7 +14,12 @@ import javax.persistence.ManyToOne;
 import com.adGeneratorApi.Dominio.Enum.Segmento;
 
 @Entity
-public class Produto {
+public class Produto implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 160567747949099295L;
 
 	@Id
 	private String idalfa;

@@ -48,6 +48,8 @@ public class UsuarioServico {
 		if (usuarioEncontrado.get().getSenha().equals(emailSenha.getSenha())) return usuarioEncontrado.get();
 		throw new Exception("Email ou Senha Incorretos");
 	}
+	
+	
 
 	public void delete(Long usuarioId) {
 		this.repositorio.deleteById(usuarioId);

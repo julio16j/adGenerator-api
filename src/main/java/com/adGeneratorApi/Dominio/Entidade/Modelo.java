@@ -1,5 +1,6 @@
 package com.adGeneratorApi.Dominio.Entidade;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,12 +16,20 @@ import javax.persistence.OneToOne;
 import com.adGeneratorApi.Dominio.Enum.Segmento;
 
 @Entity
-public class Modelo {
+public class Modelo implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7480555843396516184L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
+	@Column(name = "Nome")
+	private String nome;
+
 	@Column(name = "Segmento")
 	private Segmento segmento;
 
@@ -60,6 +69,13 @@ public class Modelo {
 	private String rotation;
 	
 	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 	
 	public String getPositionx() {
 		return positionx;
