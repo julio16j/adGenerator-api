@@ -6,13 +6,15 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.UsuarioDTO;
 import com.adGeneratorApi.Dominio.Entidade.Usuario;
 import com.adGeneratorApi.Repositorio.UsuarioRepositorio;
 
-@Component(value = "usuarioServicoConcreto")
+@Component
 public class UsuarioServico {
 	
 	@Autowired
@@ -42,11 +44,11 @@ public class UsuarioServico {
 		return usuarioEncontrado.get();
 	}
 
-	public Usuario login(@Valid UsuarioDTO emailSenha) throws Exception {
+	public Usuario login(@Valid UsuarioDTO emailSenha) throws ResponseStatusException {
 		Optional<Usuario> usuarioEncontrado = repositorio.findByEmail(emailSenha.getEmail());
-		if (usuarioEncontrado.isEmpty()) throw new Exception("Usuario não Encontrado");
+		if (usuarioEncontrado.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND ,"Usuario não Encontrado");
 		if (usuarioEncontrado.get().getSenha().equals(emailSenha.getSenha())) return usuarioEncontrado.get();
-		throw new Exception("Email ou Senha Incorretos");
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email ou Senha Incorretos");
 	}
 	
 	

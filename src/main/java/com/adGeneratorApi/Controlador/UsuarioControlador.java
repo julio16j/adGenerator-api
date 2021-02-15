@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.UsuarioDTO;
 import com.adGeneratorApi.Dominio.Entidade.Usuario;
@@ -32,8 +33,8 @@ public class UsuarioControlador {
 	public ResponseEntity<Usuario> login (@RequestBody UsuarioDTO emailSenha) {
 		try {
 			return ResponseEntity.ok(servico.login(emailSenha));
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+		} catch (ResponseStatusException e) {
+			throw e;
 		}
 	}
 	

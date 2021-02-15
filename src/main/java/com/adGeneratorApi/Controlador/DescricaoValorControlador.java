@@ -16,39 +16,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.adGeneratorApi.Dominio.DTO.ModeloDTO;
-import com.adGeneratorApi.Dominio.Entidade.Modelo;
-import com.adGeneratorApi.Servico.ModeloServico;
+import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
+import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
+import com.adGeneratorApi.Servico.DescricaoValorServico;
 
 @CrossOrigin
 @RestController
-@RequestMapping("modelo")
-public class ModeloControlador {
+@RequestMapping("descricaoValor")
+public class DescricaoValorControlador {
 	
 	@Autowired
-	ModeloServico servico;
+	DescricaoValorServico servico;
 	
 	@GetMapping
-	public ResponseEntity<List<Modelo>> obterModelos () {
+	public ResponseEntity<List<DescricaoValor>> obterDescricaoValors () {
 		return ResponseEntity.ok(servico.listarTodos());
 	}
 	
-	
-	@GetMapping("{modeloId}")
-	public ResponseEntity<Modelo> obterModeloPorId (@PathVariable("modeloId") String modeloId) {
-		return ResponseEntity.ok(servico.encontrarPorId(modeloId));
+	@GetMapping("{descricaoValorId}")
+	public ResponseEntity<DescricaoValor> obterDescricaoValorPorId (@PathVariable("descricaoValorId") String descricaoValorId) {
+		return ResponseEntity.ok(servico.encontrarPorId(descricaoValorId));
 	}
 	
 	@PostMapping
-	public ResponseEntity<Modelo> criarModelo (@RequestBody @Valid ModeloDTO novoModelo) {
-		return ResponseEntity.ok(servico.cadastrarModelo(novoModelo));
+	public ResponseEntity<DescricaoValor> criarDescricaoValor (@RequestBody @Valid DescricaoValorDTO novoDescricaoValor) {
+		return ResponseEntity.ok(servico.cadastrarDescricaoValor(novoDescricaoValor));
 	}
 	
-	
 	@DeleteMapping
-	public ResponseEntity<?> deleteById (@RequestBody String modeloId) {
+	public ResponseEntity<?> deleteById (@RequestBody String descricaoValorId) {
 		try {
-			servico.delete(modeloId);
+			servico.delete(descricaoValorId);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());

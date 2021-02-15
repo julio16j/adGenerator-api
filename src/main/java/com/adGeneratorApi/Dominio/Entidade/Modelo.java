@@ -2,73 +2,54 @@ package com.adGeneratorApi.Dominio.Entidade;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
-import com.adGeneratorApi.Dominio.Enum.Segmento;
+import com.adGeneratorApi.Dominio.DTO.ModeloDTO;
+import com.adGeneratorApi.Dominio.Embutivel.Cartao;
+import com.adGeneratorApi.Dominio.Embutivel.Descricao;
+import com.adGeneratorApi.Dominio.Embutivel.Imagem;
+import com.adGeneratorApi.Dominio.Embutivel.Titulo;
 
 @Entity
-public class Modelo implements Serializable {
+public class Modelo implements Serializable{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7480555843396516184L;
+	private static final long serialVersionUID = -8939219162105153756L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@Column(name = "Nome")
 	private String nome;
-
-	@Column(name = "Segmento")
-	private Segmento segmento;
-
-	@OneToOne
-	@JoinColumn(name="idText", referencedColumnName = "id")
-	private Texto titulo;
 	
-	@ManyToOne
-	@JoinColumn(name="produtoId", referencedColumnName = "idalfa")
-	private Produto produto;
+	@Embedded
+	private Imagem imagem;
 	
-	public Produto getProduto() {
-		return produto;
+	@Embedded
+	@Column
+	private Titulo titulo;
+	
+	@Column
+	@ElementCollection
+	private List<Descricao> descricoes;
+	
+	@Column
+	@ElementCollection
+	private List<Cartao> cartoes;
+	
+	public Modelo () {}
+	
+	public Modelo(ModeloDTO dto) {
+		nome = dto.getNome();
+		imagem = dto.getImagem();
+		titulo = dto.getTitulo();
+		descricoes = dto.getDescricoes();
+		cartoes = dto.getCartoes();
+		
 	}
 
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
-
-	@OneToMany
-	@JoinColumn(name="idDescricao", referencedColumnName = "id")
-	private List<Texto> descricao;
-	
-	@Column(name = "PositionX")
-	private String positionx;
-	
-	@Column(name = "PositionY")
-	private String positiony;
-	
-	@Column(name = "Height")
-	private String height;
-	
-	@Column(name = "Width")
-	private String witdth;
-	
-	@Column(name = "Rotation")
-	private String rotation;
-	
-	
 	public String getNome() {
 		return nome;
 	}
@@ -76,81 +57,56 @@ public class Modelo implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public String getPositionx() {
-		return positionx;
+
+	public Imagem getImagem() {
+		return imagem;
 	}
 
-	public void setPositionx(String positionx) {
-		this.positionx = positionx;
+	public void setImagem(Imagem imagem) {
+		this.imagem = imagem;
 	}
 
-	public String getPositiony() {
-		return positiony;
+	public List<Descricao> getDescricoes() {
+		return descricoes;
 	}
 
-	public void setPositiony(String positiony) {
-		this.positiony = positiony;
+	public void setDescricoes(List<Descricao> descricoes) {
+		this.descricoes = descricoes;
 	}
 
-	public String getHeight() {
-		return height;
+	public List<Cartao> getCartoes() {
+		return cartoes;
 	}
 
-	public void setHeight(String height) {
-		this.height = height;
+	public void setCartoes(List<Cartao> cartoes) {
+		this.cartoes = cartoes;
 	}
 
-	public String getWitdth() {
-		return witdth;
-	}
-
-	public void setWitdth(String witdth) {
-		this.witdth = witdth;
-	}
-
-	public String getRotation() {
-		return rotation;
-	}
-
-	public void setRotation(String rotation) {
-		this.rotation = rotation;
-	}
-
-	public Modelo () {}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Segmento getSegmento() {
-		return segmento;
-	}
-
-	public void setSegmento(Segmento segmento) {
-		this.segmento = segmento;
-	}
-
-	public Texto getTitulo() {
+	public Titulo getTitulo() {
 		return titulo;
 	}
 
-	public void setTitulo(Texto titulo) {
+	public void setTitulo(Titulo titulo) {
 		this.titulo = titulo;
 	}
 
-
-	public List<Texto> getDescricao() {
-		return descricao;
+	@Override
+	public int hashCode() {
+		return Objects.hash(cartoes, descricoes, imagem, nome, titulo);
 	}
 
-	public void setDescricao(List<Texto> descricao) {
-		this.descricao = descricao;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Modelo other = (Modelo) obj;
+		return Objects.equals(cartoes, other.cartoes) && Objects.equals(descricoes, other.descricoes)
+				&& Objects.equals(imagem, other.imagem) && Objects.equals(nome, other.nome)
+				&& Objects.equals(titulo, other.titulo);
 	}
 
-	
 }
