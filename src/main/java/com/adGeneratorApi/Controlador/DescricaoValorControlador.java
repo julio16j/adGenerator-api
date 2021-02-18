@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
+import com.adGeneratorApi.Dominio.Enum.Categoria;
+import com.adGeneratorApi.Dominio.Enum.Tamanho;
 import com.adGeneratorApi.Servico.DescricaoValorServico;
 
 @CrossOrigin
@@ -36,6 +39,15 @@ public class DescricaoValorControlador {
 	@GetMapping("{descricaoValorId}")
 	public ResponseEntity<DescricaoValor> obterDescricaoValorPorId (@PathVariable("descricaoValorId") String descricaoValorId) {
 		return ResponseEntity.ok(servico.encontrarPorId(descricaoValorId));
+	}
+	
+	@GetMapping("query")
+	public ResponseEntity<List<DescricaoValor>> obterDescricaoValorPorFiltros(
+			@PathVariable("query") 
+			@RequestParam(value="descricao", required=false) String descricao, 
+			@RequestParam(value="categoria", required=false) Categoria categoria, 
+			@RequestParam(value="tamanho", required=false) Tamanho tamanho) {
+		return ResponseEntity.ok(servico.encontrarPorFiltros(descricao, categoria, tamanho));
 	}
 	
 	@PostMapping

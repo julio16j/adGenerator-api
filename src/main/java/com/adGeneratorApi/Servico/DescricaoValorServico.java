@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
+import com.adGeneratorApi.Dominio.Enum.Categoria;
+import com.adGeneratorApi.Dominio.Enum.Tamanho;
 import com.adGeneratorApi.Repositorio.DescricaoValorRepositorio;
 
 @Component
@@ -21,7 +23,6 @@ public class DescricaoValorServico {
 	}
 	
 	public DescricaoValor cadastrarDescricaoValor (DescricaoValorDTO dto) {
-		encontrarPorId(dto.getDescricao());
 		DescricaoValor novoDescricaoValor = new DescricaoValor(dto);
 		DescricaoValor descricaoValorSalvo = repositorio.save(novoDescricaoValor);
 		return descricaoValorSalvo;
@@ -32,6 +33,12 @@ public class DescricaoValorServico {
 		Optional<DescricaoValor> descricaoValorEncontrado = repositorio.findById(descricaoValorId);
 		if (descricaoValorEncontrado.isEmpty()) throw new RuntimeException("DescricaoValor não encontrado");
 		return descricaoValorEncontrado.get();
+	}
+	
+	public List<DescricaoValor> encontrarPorFiltros(String descricao, Categoria categoria, Tamanho tamanho) {
+		List<DescricaoValor> descricaoValorEncontrado = repositorio.findByFilters(descricao, categoria, tamanho);
+		if (descricaoValorEncontrado.isEmpty()) throw new RuntimeException("DescricaoValor não encontrado");
+		return descricaoValorEncontrado;
 	}
 	
 	public void delete(String descricaoValorId) {
