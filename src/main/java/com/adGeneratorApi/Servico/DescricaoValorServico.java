@@ -23,10 +23,19 @@ public class DescricaoValorServico {
 	}
 	
 	public DescricaoValor cadastrarDescricaoValor (DescricaoValorDTO dto) {
+		if (encontrarPorId(dto.getDescricao()) != null) throw new RuntimeException("DescricaoValor já existente");
+		
 		DescricaoValor novoDescricaoValor = new DescricaoValor(dto);
 		DescricaoValor descricaoValorSalvo = repositorio.save(novoDescricaoValor);
 		return descricaoValorSalvo;
+	}
+	
+	public DescricaoValor editarDescricaoValor (DescricaoValorDTO dto) {
+		if (encontrarPorId(dto.getDescricao()) == null) throw new RuntimeException("DescricaoValor não encontrado");
 		
+		DescricaoValor novoDescricaoValor = new DescricaoValor(dto);
+		DescricaoValor descricaoValorSalvo = repositorio.save(novoDescricaoValor);
+		return descricaoValorSalvo;
 	}
 
 	public DescricaoValor encontrarPorId(String descricaoValorId) {
