@@ -45,9 +45,7 @@ public class DescricaoValorServico {
 	}
 	
 	public List<DescricaoValor> encontrarPorFiltros(String descricao, Categoria categoria, Tamanho tamanho) {
-		List<DescricaoValor> descricaoValorEncontrado = repositorio.findByFilters(descricao, categoria, tamanho);
-		if (descricaoValorEncontrado.isEmpty()) throw new RuntimeException("DescricaoValor não encontrado");
-		return descricaoValorEncontrado;
+		return repositorio.findByFilters(descricao, categoria, tamanho);
 	}
 	
 	public void delete(String descricaoValorId) {

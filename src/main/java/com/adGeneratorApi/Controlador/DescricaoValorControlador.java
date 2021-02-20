@@ -42,9 +42,8 @@ public class DescricaoValorControlador {
 		return ResponseEntity.ok(servico.encontrarPorId(descricaoValorId));
 	}
 	
-	@GetMapping("query")
+	@GetMapping("filtrar")
 	public ResponseEntity<List<DescricaoValor>> obterDescricaoValorPorFiltros(
-			@PathVariable("query") 
 			@RequestParam(value="descricao", required=false) String descricao, 
 			@RequestParam(value="categoria", required=false) Categoria categoria, 
 			@RequestParam(value="tamanho", required=false) Tamanho tamanho) {
