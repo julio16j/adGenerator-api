@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.adGeneratorApi.Dominio.DTO.ModeloDTO;
 import com.adGeneratorApi.Dominio.Entidade.Modelo;
 import com.adGeneratorApi.Servico.ModeloServico;
+import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
 @RestController
@@ -28,25 +29,31 @@ public class ModeloControlador {
 	@Autowired
 	ModeloServico servico;
 	
+	@Operation(summary = "Encontre todos os modelos")
 	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<Modelo>> obterModelos () {
 		return ResponseEntity.ok(servico.listarTodos());
 	}
 	
-	
+	@Operation(summary = "Encontre um modelo pelo Id")
 	@GetMapping("{modeloId}")
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Modelo> obterModeloPorId (@PathVariable("modeloId") String modeloId) {
 		return ResponseEntity.ok(servico.encontrarPorId(modeloId));
 	}
 	
+	@Operation(summary = "Criar um novo modelo")
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Modelo> criarModelo (@RequestBody @Valid ModeloDTO novoModelo) {
 		return ResponseEntity.ok(servico.cadastrarModelo(novoModelo));
 	}
 	
-	
-	@DeleteMapping
-	public ResponseEntity<?> deleteById (@RequestBody String modeloId) {
+	@Operation(summary = "Deletar um modelo pelo Id")
+	@DeleteMapping("{modeloId}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> deleteById (@PathVariable String modeloId) {
 		try {
 			servico.delete(modeloId);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

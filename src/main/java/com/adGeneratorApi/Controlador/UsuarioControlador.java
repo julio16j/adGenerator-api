@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.UsuarioDTO;
 import com.adGeneratorApi.Dominio.Entidade.Usuario;
 import com.adGeneratorApi.Servico.UsuarioServico;
+
+import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
 @RestController
@@ -29,7 +32,9 @@ public class UsuarioControlador {
 	@Autowired
 	UsuarioServico servico;
 	
+	@Operation(summary = "Login de usuário")
 	@PostMapping("login")
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Usuario> login (@RequestBody UsuarioDTO emailSenha) {
 		try {
 			return ResponseEntity.ok(servico.login(emailSenha));
@@ -38,25 +43,31 @@ public class UsuarioControlador {
 		}
 	}
 	
+	@Operation(summary = "Obter todos os usuários")
 	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<Usuario>> obterUsuarios () {
 		return ResponseEntity.ok(servico.listarTodos());
 	}
 	
-	
+	@Operation(summary = "Encontre um usuário pelo Id")
 	@GetMapping("{usuarioId}")
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Usuario> obterUsuarioPorId (@PathVariable("usuarioId") Long usuarioId) {
 		return ResponseEntity.ok(servico.encontrarPorId(usuarioId));
 	}
 	
+	@Operation(summary = "Criar um novo usuário")
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Usuario> criarUsuario (@RequestBody @Valid UsuarioDTO novoUsuario) {
 		return ResponseEntity.ok(servico.criarUsuario(novoUsuario));
 	}
 	
-	
-	@DeleteMapping
-	public ResponseEntity<?> deleteById (@RequestBody Long usuarioId) {
+	@Operation(summary = "Deletar um usuário pelo Id")
+	@DeleteMapping("{usuarioId}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> deleteById (@PathVariable Long usuarioId) {
 		try {
 			servico.delete(usuarioId);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
