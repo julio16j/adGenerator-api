@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
@@ -23,6 +24,12 @@ import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
 import com.adGeneratorApi.Dominio.Enum.Categoria;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 import com.adGeneratorApi.Servico.DescricaoValorServico;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @CrossOrigin
 @RestController
@@ -32,16 +39,44 @@ public class DescricaoValorControlador {
 	@Autowired
 	DescricaoValorServico servico;
 	
-	@GetMapping
-	public ResponseEntity<List<DescricaoValor>> obterDescricaoValors () {
-		return ResponseEntity.ok(servico.listarTodos());
-	}
-	
+	@Operation(summary = "Encontre um descricaoValor pelo Id")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "DescricaoValor encontrado",
+				content = { @Content(mediaType = "application/json",
+				schema = @Schema(implementation = DescricaoValor.class)) }),
+		@ApiResponse(responseCode = "400", description = "DescricaoValor inválido",
+				content = @Content),
+		@ApiResponse(responseCode = "404", description = "DescricaoValor não encontrado",
+				content = @Content),
+	})
 	@GetMapping("{descricaoValorId}")
 	public ResponseEntity<DescricaoValor> obterDescricaoValorPorId (@PathVariable("descricaoValorId") String descricaoValorId) {
 		return ResponseEntity.ok(servico.encontrarPorId(descricaoValorId));
 	}
 	
+	@Operation(summary = "Obter todos os descricaoValors cadastrados")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "DescricaoValores encontrados",
+				content = { @Content(mediaType = "application/json",
+				schema = @Schema(implementation = DescricaoValor.class)) }),
+		@ApiResponse(responseCode = "404", description = "Nenhum DescricaoValor foi encontrado",
+				content = @Content),
+	})
+	@GetMapping
+	public ResponseEntity<List<DescricaoValor>> obterDescricaoValors () {
+		return ResponseEntity.ok(servico.listarTodos());
+	}
+
+	@Operation(summary = "Encontre um descricaoValor com filtro")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "DescricaoValor encontrado",
+				content = { @Content(mediaType = "application/json",
+				schema = @Schema(implementation = DescricaoValor.class)) }),
+		@ApiResponse(responseCode = "400", description = "DescricaoValor inválido",
+				content = @Content),
+		@ApiResponse(responseCode = "404", description = "DescricaoValor não encontrado",
+				content = @Content),
+	})
 	@GetMapping("query")
 	public ResponseEntity<List<DescricaoValor>> obterDescricaoValorPorFiltros(
 			@PathVariable("query") 
@@ -51,17 +86,48 @@ public class DescricaoValorControlador {
 		return ResponseEntity.ok(servico.encontrarPorFiltros(descricao, categoria, tamanho));
 	}
 	
+	@Operation(summary = "Criar um novo descricaoValor")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "201", description = "DescricaoValor criado",
+				content = { @Content(mediaType = "application/json",
+				schema = @Schema(implementation = DescricaoValor.class)) }),
+		@ApiResponse(responseCode = "400", description = "DescricaoValor inválido",
+				content = @Content)
+	})
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<DescricaoValor> criarDescricaoValor (@RequestBody @Valid DescricaoValorDTO novoDescricaoValor) {
 		return ResponseEntity.ok(servico.cadastrarDescricaoValor(novoDescricaoValor));
 	}
 	
+	@Operation(summary = "Editar um descricaoValor existente")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "DescricaoValor atualizado",
+				content = { @Content(mediaType = "application/json",
+				schema = @Schema(implementation = DescricaoValor.class)) }),
+		@ApiResponse(responseCode = "400", description = "DescricaoValor inválido",
+				content = @Content),
+		@ApiResponse(responseCode = "404", description = "DescricaoValor não encontrado",
+				content = @Content),
+	})
 	@PutMapping
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<DescricaoValor> editarDescricaoValor (@RequestBody @Valid DescricaoValorDTO novoDescricaoValor) {
 		return ResponseEntity.ok(servico.editarDescricaoValor(novoDescricaoValor));
 	}
 	
+	@Operation(summary = "Deletar um descricaoValor pelo Id")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "DescricaoValor deletado",
+				content = { @Content(mediaType = "application/json",
+				schema = @Schema(implementation = DescricaoValor.class)) }),
+		@ApiResponse(responseCode = "400", description = "DescricaoValor inválido",
+				content = @Content),
+		@ApiResponse(responseCode = "404", description = "DescricaoValor não encontrado",
+				content = @Content),
+	})
 	@DeleteMapping
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> deleteById (@RequestBody String descricaoValorId) {
 		try {
 			servico.delete(descricaoValorId);
