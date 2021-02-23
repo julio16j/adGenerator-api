@@ -9,7 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
-import com.adGeneratorApi.Dominio.Enum.Categoria;
+import com.adGeneratorApi.Dominio.Enum.CategoriaDescricao;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 
 @Entity
@@ -22,7 +22,7 @@ public class DescricaoValor implements Serializable{
 	
 	@Column
 	@Enumerated(EnumType.STRING)
-	private Categoria categoria;
+	private CategoriaDescricao categoria;
 	
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -45,11 +45,11 @@ public class DescricaoValor implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public Categoria getCategoria() {
+	public CategoriaDescricao getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(Categoria categoria) {
+	public void setCategoria(CategoriaDescricao categoria) {
 		this.categoria = categoria;
 	}
 

@@ -3,14 +3,14 @@ package com.adGeneratorApi.Dominio.DTO;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.adGeneratorApi.Dominio.Enum.Categoria;
+import com.adGeneratorApi.Dominio.Enum.CategoriaDescricao;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 
 public class DescricaoValorDTO implements Serializable {
 	
 	private static final long serialVersionUID = 5479812992182441322L;
 	private String descricao;
-	private Categoria categoria;
+	private CategoriaDescricao categoria;
 	private Tamanho tamanho;
 	
 	public String getDescricao() {
@@ -19,10 +19,10 @@ public class DescricaoValorDTO implements Serializable {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public Categoria getCategoria() {
+	public CategoriaDescricao getCategoria() {
 		return categoria;
 	}
-	public void setCategoria(Categoria categoria) {
+	public void setCategoria(CategoriaDescricao categoria) {
 		this.categoria = categoria;
 	}
 	public Tamanho getTamanho() {

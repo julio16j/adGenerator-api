@@ -1,12 +1,12 @@
 package com.adGeneratorApi.Dominio.Enum;
 
-public enum Categoria {
+public enum CategoriaDescricao {
 	
 	Geral ("geral"), Tecnico ("tecnico"), Persuasivo ("persuasivo"), Financeiro ("financeiro");
 	
 	private String descricao;
 	
-	Categoria (String string) {
+	CategoriaDescricao (String string) {
 		this.descricao = string;
 	}
 

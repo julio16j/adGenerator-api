@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
-import com.adGeneratorApi.Dominio.Enum.Categoria;
+import com.adGeneratorApi.Dominio.Enum.CategoriaDescricao;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 import com.adGeneratorApi.Repositorio.DescricaoValorRepositorio;
 
@@ -44,7 +44,7 @@ public class DescricaoValorServico {
 		return descricaoValorEncontrado.get();
 	}
 	
-	public List<DescricaoValor> encontrarPorFiltros(String descricao, Categoria categoria, Tamanho tamanho) {
+	public List<DescricaoValor> encontrarPorFiltros(String descricao, CategoriaDescricao categoria, Tamanho tamanho) {
 		return repositorio.findByFilters(descricao, categoria, tamanho);
 	}
 	

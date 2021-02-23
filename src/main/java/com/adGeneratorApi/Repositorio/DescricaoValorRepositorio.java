@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
-import com.adGeneratorApi.Dominio.Enum.Categoria;
+import com.adGeneratorApi.Dominio.Enum.CategoriaDescricao;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 
 @Repository
@@ -16,5 +16,5 @@ public interface DescricaoValorRepositorio extends JpaRepository<DescricaoValor,
 			+ "WHERE (:descricao IS NULL OR d.descricao LIKE :descricao || '%') "
 			+ "AND (d.categoria = :categoria OR :categoria IS NULL) "
 			+ "AND (d.tamanho = :tamanho OR :tamanho IS NULL)")
-	public List<DescricaoValor> findByFilters(@Param("descricao") String descricao, @Param("categoria") Categoria categoria, @Param("tamanho") Tamanho tamanho);
+	public List<DescricaoValor> findByFilters(@Param("descricao") String descricao, @Param("categoria") CategoriaDescricao categoria, @Param("tamanho") Tamanho tamanho);
 }

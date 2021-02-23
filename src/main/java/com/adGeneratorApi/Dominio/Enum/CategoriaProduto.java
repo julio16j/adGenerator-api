@@ -1,12 +1,12 @@
 package com.adGeneratorApi.Dominio.Enum;
 
-public enum TipoElemento {
+public enum CategoriaProduto {
 	
-	Imagem ("imagem"), Titulo ("titulo"), Descricao ("descricao"), Cartao ("cartao");
+	Eletronicos ("Eletrônicos"), Mercado ("Mercado"), Utensilios ("Utensílios"), Tecidos ("Tecidos");
 	
 	private String descricao;
 	
-	TipoElemento(String string) {
+	CategoriaProduto (String string) {
 		this.descricao = string;
 	}
 
@@ -17,5 +17,4 @@ public enum TipoElemento {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
 }

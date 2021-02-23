@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
-import com.adGeneratorApi.Dominio.Enum.Categoria;
+import com.adGeneratorApi.Dominio.Enum.CategoriaDescricao;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 import com.adGeneratorApi.Servico.DescricaoValorServico;
 
@@ -51,7 +51,7 @@ public class DescricaoValorControlador {
 	@GetMapping("filtrar")
 	public ResponseEntity<List<DescricaoValor>> obterDescricaoValorPorFiltros(
 			@RequestParam(value="descricao", required=false) String descricao, 
-			@RequestParam(value="categoria", required=false) Categoria categoria, 
+			@RequestParam(value="categoria", required=false) CategoriaDescricao categoria, 
 			@RequestParam(value="tamanho", required=false) Tamanho tamanho) {
 		return ResponseEntity.ok(servico.encontrarPorFiltros(descricao, categoria, tamanho));
 	}
