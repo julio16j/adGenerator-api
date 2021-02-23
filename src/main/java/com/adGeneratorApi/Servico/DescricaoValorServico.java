@@ -23,7 +23,7 @@ public class DescricaoValorServico {
 	}
 	
 	public DescricaoValor cadastrarDescricaoValor (DescricaoValorDTO dto) {
-		if (encontrarPorId(dto.getDescricao()) != null) throw new RuntimeException("DescricaoValor já existente");
+		if (repositorio.findById(dto.getDescricao()).isPresent()) throw new RuntimeException("DescricaoValor já existente");
 		
 		DescricaoValor novoDescricaoValor = new DescricaoValor(dto);
 		DescricaoValor descricaoValorSalvo = repositorio.save(novoDescricaoValor);
