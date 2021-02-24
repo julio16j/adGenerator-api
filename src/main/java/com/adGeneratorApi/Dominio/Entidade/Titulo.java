@@ -3,6 +3,7 @@ package com.adGeneratorApi.Dominio.Entidade;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import com.adGeneratorApi.Dominio.DTO.TituloDTO;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 
+@Entity
 public class Titulo implements Serializable {
 	
 	private static final long serialVersionUID = -8939219162105153756L;
@@ -24,7 +26,7 @@ public class Titulo implements Serializable {
 	private Tamanho tamanho;
 	
 	@ManyToOne
-	@JoinColumn(name = "produto_id")
+	@JoinColumn(name = "nome")
 	private Produto produto;
 	
 	
