@@ -37,6 +37,10 @@ public class ModeloServico {
 		repositorio.deleteById(modeloId);
 		
 	}
+
+	public List<Modelo> encontrarPorNome(String nome) {
+		return repositorio.filtrarPorNome(nome);
+	}
 	
 	
 }

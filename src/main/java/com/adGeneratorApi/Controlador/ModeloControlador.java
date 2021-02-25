@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.adGeneratorApi.Dominio.DTO.ModeloDTO;
 import com.adGeneratorApi.Dominio.Entidade.Modelo;
 import com.adGeneratorApi.Servico.ModeloServico;
+
 import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
@@ -34,6 +37,13 @@ public class ModeloControlador {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<Modelo>> obterModelos () {
 		return ResponseEntity.ok(servico.listarTodos());
+	}
+	
+	@Operation(summary = "Encontre Modelos pelo nome")
+	@GetMapping("filtrar")
+	public ResponseEntity<List<Modelo>> obterDescricaoValorPorFiltros(
+			@RequestParam(value="nome", required=false) String nome) {
+		return ResponseEntity.ok(servico.encontrarPorNome(nome));
 	}
 	
 	@Operation(summary = "Encontre um modelo pelo Id")
