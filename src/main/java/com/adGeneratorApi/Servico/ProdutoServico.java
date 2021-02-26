@@ -28,12 +28,23 @@ public class ProdutoServico {
 	}
 	
 	public Produto cadastrarProduto (ProdutoDTO dto) throws IOException {
+		if (repositorio.findById(dto.getNome()).isPresent()) throw new RuntimeException("Produto já existente");
+
 		Produto novoProduto = new Produto(dto);
 		String caminhoImagem = salvarImagem(dto.getImagemBase64(), dto.getNome());
 		novoProduto.setCaminhoImagem(caminhoImagem);
 		Produto produtoSalvo = repositorio.save(novoProduto);
 		return produtoSalvo;
+	}
+	
+	public Produto editarProduto (ProdutoDTO dto) throws IOException {
+		if (encontrarPorId(dto.getNome()) == null) throw new RuntimeException("Produto não encontrado");
 		
+		Produto novoProduto = new Produto(dto);
+		String caminhoImagem = salvarImagem(dto.getImagemBase64(), dto.getNome());
+		novoProduto.setCaminhoImagem(caminhoImagem);
+		Produto produtoSalvo = repositorio.save(novoProduto);
+		return produtoSalvo;
 	}
 
 	private String salvarImagem(String imagemBase64, String nome) throws IOException {

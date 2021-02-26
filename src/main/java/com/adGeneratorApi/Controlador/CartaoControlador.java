@@ -20,61 +20,61 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.adGeneratorApi.Dominio.DTO.ProdutoDTO;
-import com.adGeneratorApi.Dominio.Entidade.Produto;
-import com.adGeneratorApi.Servico.ProdutoServico;
+import com.adGeneratorApi.Dominio.DTO.CartaoDTO;
+import com.adGeneratorApi.Dominio.Entidade.Cartao;
+import com.adGeneratorApi.Servico.CartaoServico;
+
 import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
 @RestController
-@RequestMapping("produto")
-public class ProdutoControlador {
-	
+@RequestMapping("cartao")
+public class CartaoControlador {
 	@Autowired
-	ProdutoServico servico;
+	CartaoServico servico;
 	
-	@Operation(summary = "Encontre todos os produtos")
+	@Operation(summary = "Encontre todos os Cartaos")
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<List<Produto>> obterProdutos () {
+	public ResponseEntity<List<Cartao>> obterCartoes () {
 		return ResponseEntity.ok(servico.listarTodos());
 	}
 	
-	@Operation(summary = "Encontre um produto pelo Id")
-	@GetMapping("{produtoId}")
+	@Operation(summary = "Encontre um Cartão pelo Id")
+	@GetMapping("{cartaoId}")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Produto> obterProdutoPorId (@PathVariable("produtoId") String produtoId) {
-		return ResponseEntity.ok(servico.encontrarPorId(produtoId));
+	public ResponseEntity<Cartao> obterCartaoPorId (@PathVariable("cartaoId") String cartaoId) {
+		return ResponseEntity.ok(servico.encontrarPorId(cartaoId));
 	}
 	
-	@Operation(summary = "Criar um novo produto")
+	@Operation(summary = "Criar um novo Cartão")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Produto> criarProduto (@RequestBody @Valid ProdutoDTO novoProduto) {
+	public ResponseEntity<Cartao> criarCartao (@RequestBody @Valid CartaoDTO novoCartao) {
 		try {
-			return ResponseEntity.ok(servico.cadastrarProduto(novoProduto));
+			return ResponseEntity.ok(servico.cadastrarCartao(novoCartao));
 		} catch (IOException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Erro ao Salvar a imagem" + e.getMessage());
 		}
 	}
 	
-	@Operation(summary = "Criar um novo produto")
+	@Operation(summary = "Editar um Cartão")
 	@PutMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Produto> editarProduto (@RequestBody @Valid ProdutoDTO novoProduto) {
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Cartao> editarCartao (@RequestBody @Valid CartaoDTO novoCartao) {
 		try {
-			return ResponseEntity.ok(servico.editarProduto(novoProduto));
+			return ResponseEntity.ok(servico.editarCartao(novoCartao));
 		} catch (IOException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Erro ao Salvar a imagem" + e.getMessage());
 		}
 	}
 	
-	@Operation(summary = "Deletar um produto pelo Id")
-	@DeleteMapping("{produtoId}")
+	@Operation(summary = "Deletar um Cartão pelo Id")
+	@DeleteMapping("{cartaoId}")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> deleteById (@PathVariable String produtoId) {
+	public ResponseEntity<?> deleteById (@PathVariable String cartaoId) {
 		try {
-			servico.delete(produtoId);
+			servico.delete(cartaoId);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
