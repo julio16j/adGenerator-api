@@ -62,6 +62,10 @@ public class CartaoServico {
 		return cartaoEncontrado.get();
 	}
 	
+	public List<Cartao> encontrarPorFiltros(String nome) {
+		return repositorio.findByFilters(nome);
+	}
+	
 	public void delete(String cartaoId) {
 		repositorio.deleteById(cartaoId);
 		
