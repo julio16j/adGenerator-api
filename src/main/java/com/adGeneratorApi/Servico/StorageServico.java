@@ -13,9 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Service
-public class StorageService {
+public class StorageServico {
 
     @Value("${application.bucket.name}")
     private String bucketName;
@@ -25,10 +26,10 @@ public class StorageService {
 
     public String uploadFile(MultipartFile file) throws Exception {
         File fileObj = convertMultiPartFileToFile(file);
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        String fileName = LocalDateTime.now() + "_" + file.getOriginalFilename();
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
         fileObj.delete();
-        return "File uploaded : " + fileName;
+        return fileName;
     }
 
 

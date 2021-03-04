@@ -1,7 +1,6 @@
 package com.adGeneratorApi.Servico;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +71,7 @@ public class ModeloServico {
 		for (Titulo titulo : titulosProduto) {
 			VariacaoModeloDTO novaVariacao = new VariacaoModeloDTO();
 			novaVariacao.setTitulo(titulo);
+			novaVariacao.setDescricoes(descricao.subList(0, 2));
 		}
 		return null;
 	}

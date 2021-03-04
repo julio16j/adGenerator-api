@@ -3,8 +3,8 @@ package com.adGeneratorApi.Controlador;
 import java.io.Serializable;
 import java.util.List;
 
-import com.adGeneratorApi.Dominio.Embutivel.Descricao;
 import com.adGeneratorApi.Dominio.Entidade.Cartao;
+import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
 import com.adGeneratorApi.Dominio.Entidade.Modelo;
 import com.adGeneratorApi.Dominio.Entidade.Titulo;
 
@@ -13,7 +13,7 @@ public class VariacaoModeloDTO implements Serializable {
 	private static final long serialVersionUID = -2787726937528515283L;
 	private Modelo modelo;
 	private Titulo titulo;
-	private List<Descricao> descricoes;
+	private List<DescricaoValor> descricoes;
 	private List<Cartao> cartoes;
 	
 	public Modelo getModelo() {
@@ -28,10 +28,10 @@ public class VariacaoModeloDTO implements Serializable {
 	public void setTitulo(Titulo titulo) {
 		this.titulo = titulo;
 	}
-	public List<Descricao> getDescricoes() {
+	public List<DescricaoValor> getDescricoes() {
 		return descricoes;
 	}
-	public void setDescricoes(List<Descricao> descricoes) {
+	public void setDescricoes(List<DescricaoValor> descricoes) {
 		this.descricoes = descricoes;
 	}
 	public List<Cartao> getCartoes() {

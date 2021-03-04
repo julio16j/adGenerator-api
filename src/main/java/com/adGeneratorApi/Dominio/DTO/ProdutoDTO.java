@@ -10,7 +10,6 @@ public class ProdutoDTO implements Serializable {
 	private String nome;
 	private String descricao;
 	private CategoriaProduto categoria;
-	private String imagemBase64;
 	
 	public String getNome() {
 		return nome;
@@ -29,12 +28,6 @@ public class ProdutoDTO implements Serializable {
 	}
 	public void setCategoria(CategoriaProduto categoria) {
 		this.categoria = categoria;
-	}
-	public String getImagemBase64() {
-		return imagemBase64;
-	}
-	public void setImagemBase64(String imagemBase64) {
-		this.imagemBase64 = imagemBase64;
 	}
 
 }
