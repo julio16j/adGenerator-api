@@ -63,6 +63,8 @@ public class ProdutoServico {
 	}
 	
 	public void delete(String produtoId) {
+		Produto produto = encontrarPorId(produtoId);
+		storageServico.deleteFile(produto.getCaminhoImagem());
 		repositorio.deleteById(produtoId);
 		
 	}
