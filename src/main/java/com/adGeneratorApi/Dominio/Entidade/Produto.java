@@ -1,12 +1,15 @@
 package com.adGeneratorApi.Dominio.Entidade;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.adGeneratorApi.Dominio.DTO.ProdutoDTO;
 import com.adGeneratorApi.Dominio.Enum.CategoriaProduto;
@@ -28,6 +31,9 @@ public class Produto implements Serializable{
 	
 	@Column
 	private String caminhoImagem;
+	
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+	private List<Titulo> titulos;
 	
 	
 	public Produto () {}

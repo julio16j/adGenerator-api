@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.ProdutoDTO;
 import com.adGeneratorApi.Dominio.Entidade.Produto;
+import com.adGeneratorApi.Dominio.Enum.CategoriaProduto;
 import com.adGeneratorApi.Servico.ProdutoServico;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -45,6 +47,15 @@ public class ProdutoControlador {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Produto> obterProdutoPorId (@PathVariable("produtoId") String produtoId) {
 		return ResponseEntity.ok(servico.encontrarPorId(produtoId));
+	}
+	
+	@Operation(summary = "Encontre produtos por filtros")
+	@GetMapping("filtrar")
+	public ResponseEntity<List<Produto>> obterDescricaoValorPorFiltros(
+			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "descricao", required = false) String descricao,
+			@RequestParam(value = "categoria", required = false) CategoriaProduto categoria) {
+		return ResponseEntity.ok(servico.encontrarPorFiltros(nome, descricao, categoria));
 	}
 	
 	@Operation(summary = "Criar um novo produto")

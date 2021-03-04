@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.adGeneratorApi.Dominio.DTO.ProdutoDTO;
 import com.adGeneratorApi.Dominio.Entidade.Produto;
+import com.adGeneratorApi.Dominio.Enum.CategoriaProduto;
 import com.adGeneratorApi.Repositorio.ProdutoRepositorio;
 
 @Component
@@ -60,6 +61,10 @@ public class ProdutoServico {
 		Optional<Produto> produtoEncontrado = repositorio.findById(produtoId);
 		if (produtoEncontrado.isEmpty()) throw new RuntimeException("Produto não encontrado");
 		return produtoEncontrado.get();
+	}
+	
+	public List<Produto> encontrarPorFiltros(String nome, String descricao, CategoriaProduto categoria) {
+		return repositorio.findByFilters(nome, descricao, categoria);
 	}
 	
 	public void delete(String produtoId) {
