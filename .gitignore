@@ -33,4 +33,4 @@ build/
 .vscode/
 imagens/
 
-application.yml
+src/main/resources/application.yml
