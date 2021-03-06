@@ -1,59 +1,54 @@
 package com.adGeneratorApi.Servico;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-import javax.imageio.ImageIO;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.adGeneratorApi.Dominio.DTO.CartaoDTO;
 import com.adGeneratorApi.Dominio.Entidade.Cartao;
 import com.adGeneratorApi.Repositorio.CartaoRepositorio;
+import com.adGeneratorApi.Utils.MapeadorObjeto;
 
 @Component
 public class CartaoServico {
 	
 	@Autowired
 	CartaoRepositorio repositorio;
+	@Autowired
+	StorageServico storageServico;
 	
 	public List<Cartao> listarTodos () {
 		return repositorio.findAll();
 	}
 	
-	public Cartao cadastrarCartao (CartaoDTO dto) throws IOException {
+	public Cartao cadastrarCartao (String cartao, MultipartFile imagemCartao) throws Exception {
+		CartaoDTO dto = MapeadorObjeto.converterStringJson(cartao, CartaoDTO.class);
 		if (repositorio.findById(dto.getNome()).isPresent()) throw new RuntimeException("Cartão já existente");
-
-		Cartao novoCartao = new Cartao(dto);
-		String caminhoImagem = salvarImagem(dto.getImagemBase64(), dto.getNome());
-		novoCartao.setCaminhoImagem(caminhoImagem);
-		Cartao CartaoSalvo = repositorio.save(novoCartao);
-		return CartaoSalvo;
-	}
-	
-	public Cartao editarCartao(CartaoDTO dto) throws IOException {
-		if (encontrarPorId(dto.getNome()) == null) throw new RuntimeException("Cartão não encontrado");
 		
 		Cartao novoCartao = new Cartao(dto);
-		String caminhoImagem = salvarImagem(dto.getImagemBase64(), dto.getNome());
+		String caminhoImagem = salvarImagem(imagemCartao, dto.getNome());
 		novoCartao.setCaminhoImagem(caminhoImagem);
-		Cartao CartaoSalvo = repositorio.save(novoCartao);
-		return CartaoSalvo;
+		Cartao cartaoSalvo = repositorio.save(novoCartao);
+		return cartaoSalvo;
+	}
+	
+	public Cartao editarCartao(String cartao, MultipartFile imagemCartao) throws Exception {
+		CartaoDTO dto = MapeadorObjeto.converterStringJson(cartao, CartaoDTO.class);
+		if (repositorio.findById(dto.getNome()).isPresent()) throw new RuntimeException("Cartão já existente");
+		
+		Cartao novoCartao = new Cartao(dto);
+		String caminhoImagem = salvarImagem(imagemCartao, dto.getNome());
+		novoCartao.setCaminhoImagem(caminhoImagem);
+		Cartao cartaoSalvo = repositorio.save(novoCartao);
+		return cartaoSalvo;
 	}
 
-	private String salvarImagem(String imagemBase64, String nome) throws IOException {
-	  byte[] byteDecodificados = Base64.getDecoder().decode(imagemBase64);
-      ByteArrayInputStream byteStream = new ByteArrayInputStream(byteDecodificados);
-      BufferedImage buffImagem = ImageIO.read(byteStream);
-      String caminho = "imagens/" + nome + ".png";
-      ImageIO.write(buffImagem, "png", new File(caminho) );
-      return caminho;
+	private String salvarImagem(MultipartFile imagemCartao, String nome) throws Exception {
+	  String caminho = storageServico.uploadFile(imagemCartao);
+	  return caminho;
 	}
 
 	public Cartao encontrarPorId(String cartaoId) {
@@ -67,7 +62,8 @@ public class CartaoServico {
 	}
 	
 	public void delete(String cartaoId) {
+		Cartao cartao = encontrarPorId(cartaoId);
+		storageServico.deleteFile(cartao.getCaminhoImagem());
 		repositorio.deleteById(cartaoId);
-		
 	}
 }
