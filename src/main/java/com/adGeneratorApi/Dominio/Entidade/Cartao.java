@@ -1,10 +1,12 @@
 package com.adGeneratorApi.Dominio.Entidade;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import com.adGeneratorApi.Dominio.DTO.CartaoDTO;
 
@@ -20,6 +22,9 @@ public class Cartao implements Serializable{
 	
 	@Column
 	private String caminhoImagem;
+	
+	@ManyToMany(mappedBy = "cartoes")
+	Set<VariacaoModelo> variacoes;
 	
 	public Cartao() {}
 
@@ -50,5 +55,13 @@ public class Cartao implements Serializable{
 
 	public void setCaminhoImagem(String caminhoImagem) {
 		this.caminhoImagem = caminhoImagem;
+	}
+
+	public Set<VariacaoModelo> getVariacoes() {
+		return variacoes;
+	}
+
+	public void setVariacoes(Set<VariacaoModelo> variacoes) {
+		this.variacoes = variacoes;
 	}
 }

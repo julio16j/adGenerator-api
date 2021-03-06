@@ -1,12 +1,14 @@
 package com.adGeneratorApi.Dominio.Entidade;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
 import com.adGeneratorApi.Dominio.Enum.CategoriaDescricao;
@@ -28,6 +30,8 @@ public class DescricaoValor implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Tamanho tamanho;
 	
+	@ManyToMany(mappedBy = "descricoes")
+	Set<VariacaoModelo> variacoes;
 	
 	public DescricaoValor () {}
 	
@@ -59,5 +63,13 @@ public class DescricaoValor implements Serializable{
 
 	public void setTamanho(Tamanho tamanho) {
 		this.tamanho = tamanho;
+	}
+
+	public Set<VariacaoModelo> getVariacoes() {
+		return variacoes;
+	}
+
+	public void setVariacoes(Set<VariacaoModelo> variacoes) {
+		this.variacoes = variacoes;
 	}
 }

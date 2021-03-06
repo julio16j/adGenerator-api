@@ -1,4 +1,4 @@
-package com.adGeneratorApi.Controlador;
+package com.adGeneratorApi.Dominio.DTO;
 
 import java.io.Serializable;
 import java.util.List;
