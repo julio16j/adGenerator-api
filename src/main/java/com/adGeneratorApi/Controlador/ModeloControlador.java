@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.ModeloDTO;
-import com.adGeneratorApi.Dominio.DTO.VariacaoModeloDTO;
 import com.adGeneratorApi.Dominio.Entidade.Modelo;
 import com.adGeneratorApi.Servico.ModeloServico;
 
@@ -71,16 +69,6 @@ public class ModeloControlador {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
-		}
-	}
-	
-	@Operation(summary = "Detalhar Modelos")
-	@GetMapping("detalhar")
-	public ResponseEntity<List<VariacaoModeloDTO>> detalharModelos () {
-		try {
-			return ResponseEntity.ok(servico.detalharModelos());
-		} catch (Exception erro) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, erro.getMessage());
 		}
 	}
 }
