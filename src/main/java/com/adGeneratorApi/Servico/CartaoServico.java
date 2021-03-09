@@ -37,8 +37,12 @@ public class CartaoServico {
 	
 	public Cartao editarCartao(String cartao, MultipartFile imagemCartao) throws Exception {
 		CartaoDTO dto = MapeadorObjeto.converterStringJson(cartao, CartaoDTO.class);
-		if (repositorio.findById(dto.getNome()).isPresent()) throw new RuntimeException("Cartão já existente");
+		Cartao cartaoAtual = encontrarPorId(dto.getNome());
 		
+		if (cartaoAtual == null) throw new RuntimeException("Cartão não encontrado");
+		
+		storageServico.deleteFile(cartaoAtual.getCaminhoImagem());
+
 		Cartao novoCartao = new Cartao(dto);
 		String caminhoImagem = salvarImagem(imagemCartao, dto.getNome());
 		novoCartao.setCaminhoImagem(caminhoImagem);

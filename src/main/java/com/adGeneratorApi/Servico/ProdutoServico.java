@@ -38,7 +38,11 @@ public class ProdutoServico {
 	
 	public Produto editarProduto (String produto, MultipartFile imagemProduto) throws Exception {
 		ProdutoDTO dto = MapeadorObjeto.converterStringJson(produto, ProdutoDTO.class);
-		if (encontrarPorId(dto.getNome()) == null) throw new RuntimeException("Produto não encontrado");
+		Produto produtoAtual = encontrarPorId(dto.getNome());
+		
+		if (produtoAtual == null) throw new RuntimeException("Produto não encontrado");
+		
+		storageServico.deleteFile(produtoAtual.getCaminhoImagem());
 		
 		Produto novoProduto = new Produto(dto);
 		String caminhoImagem = salvarImagem(imagemProduto, dto.getNome());
