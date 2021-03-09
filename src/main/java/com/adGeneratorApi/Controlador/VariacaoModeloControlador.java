@@ -1,14 +1,20 @@
 package com.adGeneratorApi.Controlador;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.Entidade.VariacaoModelo;
 import com.adGeneratorApi.Servico.VariacaoModeloServico;
@@ -25,9 +31,34 @@ public class VariacaoModeloControlador {
 	
 	@Operation(summary = "Listar Com Paginação")
 	@GetMapping
-	public ResponseEntity<Page<VariacaoModelo>> listarPaginado(@RequestParam(value="pagina", required=false) Integer pagina,
+	public ResponseEntity<Page<VariacaoModelo>> listarPaginado(@RequestParam(value="pagina", required=true) Integer pagina,
 															   @RequestParam(value="tamanho", required=false) Integer tamanho,
 															   @RequestParam(value="ordenarPor",required=false) Sort ordenarPor) {
-		return ResponseEntity.ok(servico.listarTodos(pagina, tamanho, ordenarPor));
+		return ResponseEntity.ok(servico.listarTodosPaginado(pagina, tamanho, ordenarPor));
 	}
+	
+	@Operation(summary = "Listar Todos")
+	@GetMapping("todos")
+	public ResponseEntity<List<VariacaoModelo>> listarPaginado() {
+		return ResponseEntity.ok(servico.listarTodos());
+	}
+	
+	@Operation(summary = "Encontrar por Id")
+	@GetMapping("{chave}")
+	public ResponseEntity<VariacaoModelo> encontrarPorId(@PathVariable("chave") String chave) {
+		return ResponseEntity.ok(servico.encontrarPorId(chave));
+	}
+	
+	@Operation(summary = "Gerar Variacoes")
+	@PostMapping
+	public ResponseEntity<Object> gerarVariacoes() {
+		try {
+			servico.gerarVariacoes();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		} catch (ResponseStatusException error) {
+			throw error;
+		}
+		
+	}
+	
 }

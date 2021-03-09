@@ -35,7 +35,6 @@ public class Titulo implements Serializable {
 	public Titulo(TituloDTO dto) {
 		this.descricao = dto.getDescricao();
 		this.tamanho = dto.getTamanho();
-		this.produto = dto.getProduto();
 	}
 
 	public String getDescricao() {

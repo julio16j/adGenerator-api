@@ -55,7 +55,7 @@ public class CartaoControlador {
 	@Operation(summary = "Criar um novo Cartão")
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Cartao> criarCartao (@RequestPart("cartao") String novoCartao, @RequestPart("imagemCartao") MultipartFile imagemCartao) {
+	public ResponseEntity<Cartao> criarCartao (@RequestPart("novoCartao") String novoCartao, @RequestPart("imagemCartao") MultipartFile imagemCartao) {
 		try {
 			return ResponseEntity.ok(servico.cadastrarCartao(novoCartao, imagemCartao));
 		} catch (Exception e) {

@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
 import com.adGeneratorApi.Dominio.Enum.CategoriaDescricao;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class DescricaoValor implements Serializable{
@@ -31,6 +32,7 @@ public class DescricaoValor implements Serializable{
 	private Tamanho tamanho;
 	
 	@ManyToMany(mappedBy = "descricoes")
+	@JsonBackReference
 	Set<VariacaoModelo> variacoes;
 	
 	public DescricaoValor () {}
