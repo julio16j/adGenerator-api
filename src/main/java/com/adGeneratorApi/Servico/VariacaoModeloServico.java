@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.Entidade.Cartao;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
@@ -42,12 +44,16 @@ public class VariacaoModeloServico {
 	@Autowired
 	ModeloServico modeloServico;
 	
-	public Page<VariacaoModelo> listarTodos (Integer pagina, Integer tamanho, Sort sort) {
+	public Page<VariacaoModelo> listarTodosPaginado (Integer pagina, Integer tamanho, Sort sort) {
 		sort = sort == null ? Sort.by("produto") : sort;
 		tamanho = tamanho == null ? 5 : tamanho;
 		return repositorio.listarTodosPaginado(PageRequest.of(pagina, tamanho, sort));
 	}
-
+	
+	public List<VariacaoModelo> listarTodos () {
+		return repositorio.findAll();
+	}
+	
 	public String gerarChave(VariacaoModelo novaVariacao) {
 		String chave = "";
 		chave += novaVariacao.getModelo().getNome();
@@ -60,7 +66,7 @@ public class VariacaoModeloServico {
 			chave += cartao.getNome();
 		}
 		Optional<VariacaoModelo> variacaoEncontrada = repositorio.findById(chave);
-		if (variacaoEncontrada.isPresent()) throw new RuntimeException("Chave já cadastrada");
+		if (variacaoEncontrada.isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Chave já cadastrada");
 		return chave;
 	}
 	
@@ -102,5 +108,12 @@ public class VariacaoModeloServico {
 				}
 			}
 		} repositorio.saveAll(variacoes);		
-	}	
+	}
+	
+	public VariacaoModelo encontrarPorId (String chave) {
+		Optional<VariacaoModelo> variacaoEncontrada = repositorio.findById(chave);
+		if (variacaoEncontrada.isPresent()) {
+			return variacaoEncontrada.get();
+		} else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Variacão Não Encontrada");
+	}
 }

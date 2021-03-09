@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -15,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.adGeneratorApi.Dominio.Enum.StatusEnum;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class VariacaoModelo implements Serializable {
@@ -36,14 +36,16 @@ public class VariacaoModelo implements Serializable {
 	@JoinColumn(name = "titulo")
 	private Titulo titulo;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
+	@JsonManagedReference
 	@JoinTable(
 			  name = "DescricaoVariacaoModelo", 
 			  joinColumns = @JoinColumn(name = "chaveVariacao"), 
 			  inverseJoinColumns = @JoinColumn(name = "descricaoId"))
 	private Set<DescricaoValor> descricoes;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
+	@JsonManagedReference
 	@JoinTable(
 			  name = "CartaoVariacaoModelo", 
 			  joinColumns = @JoinColumn(name = "chaveVariacao"), 

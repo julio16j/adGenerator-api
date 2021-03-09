@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.ProdutoDTO;
 import com.adGeneratorApi.Dominio.Entidade.Produto;
@@ -58,7 +60,7 @@ public class ProdutoServico {
 
 	public Produto encontrarPorId(String produtoId) {
 		Optional<Produto> produtoEncontrado = repositorio.findById(produtoId);
-		if (produtoEncontrado.isEmpty()) throw new RuntimeException("Produto não encontrado");
+		if (produtoEncontrado.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND ,"Produto não encontrado");
 		return produtoEncontrado.get();
 	}
 	

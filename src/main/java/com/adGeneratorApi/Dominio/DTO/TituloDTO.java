@@ -3,14 +3,13 @@ package com.adGeneratorApi.Dominio.DTO;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.adGeneratorApi.Dominio.Entidade.Produto;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 
 public class TituloDTO implements Serializable {
 	private static final long serialVersionUID = 5479812992182441322L;
 	private String descricao;
 	private Tamanho tamanho;
-	private Produto produto;
+	private String produtoId;
 	
 	public String getDescricao() {
 		return descricao;
@@ -24,15 +23,15 @@ public class TituloDTO implements Serializable {
 	public void setTamanho(Tamanho tamanho) {
 		this.tamanho = tamanho;
 	}
-	public Produto getProduto() {
-		return produto;
+	public String getProdutoId() {
+		return produtoId;
 	}
-	public void setProduto(Produto produto) {
-		this.produto = produto;
+	public void setProdutoId(String produtoId) {
+		this.produtoId = produtoId;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(descricao, tamanho, produto);
+		return Objects.hash(descricao, produtoId, tamanho);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -43,6 +42,7 @@ public class TituloDTO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		TituloDTO other = (TituloDTO) obj;
-		return Objects.equals(descricao, other.descricao) && tamanho == other.tamanho && produto == other.produto;
+		return Objects.equals(descricao, other.descricao) && Objects.equals(produtoId, other.produtoId)
+				&& tamanho == other.tamanho;
 	}
 }
