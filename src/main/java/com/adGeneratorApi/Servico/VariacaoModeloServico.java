@@ -82,32 +82,51 @@ public class VariacaoModeloServico {
 			for (Produto produto : produtos) {
 				List<Titulo> titulosProduto = tituloServico.encontrarPorFiltros(null, null, produto);
 				for (Titulo titulo : titulosProduto) {
-					VariacaoModelo novaVariacao = new VariacaoModelo();
 					int contadorDescricao = 0;
-					Set<DescricaoValor> descricoesNovas = new HashSet<>();
-					for (int descricaoI = 0; descricaoI < numeroDescricoes; descricaoI++) {
-						descricoesNovas.add(descricoes.get(contadorDescricao));
-						if (descricoes.size() -1 > contadorDescricao) contadorDescricao++;
-					}
 					int contadorCartao = 0;
-					Set<Cartao> cartoesNovas = new HashSet<>();
-					for (int cartaoI = 0; cartaoI < numeroCartoes; cartaoI++) {
-						cartoesNovas.add(cartoes.get(contadorCartao));
-						if (cartoes.size() -1 > contadorCartao) contadorCartao++;
+					int contadorDescricaoAuxiliar = 0;
+					boolean deveContinuarDescricao = true;
+					while (contadorDescricao  < descricoes.size() && deveContinuarDescricao ) {
+						boolean deveContinuarCartao = true;
+						contadorCartao = 0;
+						while (contadorCartao < cartoes.size() && deveContinuarCartao) {
+							contadorDescricaoAuxiliar = contadorDescricao;
+							VariacaoModelo novaVariacao = new VariacaoModelo();
+							Set<DescricaoValor> descricoesNovas = new HashSet<>();
+							Set<Cartao> cartoesNovas = new HashSet<>();
+							for (int descricaoI = 0; descricaoI < numeroDescricoes; descricaoI++) {
+								if (descricoes.size() <= contadorDescricao) {
+									deveContinuarDescricao = false;
+									break;
+								}
+								descricoesNovas.add(descricoes.get(contadorDescricaoAuxiliar));
+								contadorDescricaoAuxiliar++;
+							}
+							for (int cartaoI = 0; cartaoI < numeroCartoes; cartaoI++) {
+								if (cartoes.size() <= contadorCartao) {
+									deveContinuarCartao = false;
+									break;
+								}
+								cartoesNovas.add(cartoes.get(contadorCartao));
+								contadorCartao++;
+							}
+							if (!deveContinuarCartao || !deveContinuarDescricao) break;
+							novaVariacao.setTitulo(titulo);
+							novaVariacao.setProduto(produto);
+							novaVariacao.setCartoes(cartoesNovas);
+							novaVariacao.setDescricoes(descricoesNovas);
+							novaVariacao.setModelo(modelo);
+							try {
+								novaVariacao.setChave(gerarChave(novaVariacao));
+								novaVariacao.setStatus(StatusEnum.Neutro);
+								variacoes.add(novaVariacao);
+							} catch (Exception e) {}
+						}
+						contadorDescricao = contadorDescricaoAuxiliar;
 					}
-					novaVariacao.setTitulo(titulo);
-					novaVariacao.setProduto(produto);
-					novaVariacao.setCartoes(cartoesNovas);
-					novaVariacao.setDescricoes(descricoesNovas);
-					novaVariacao.setModelo(modelo);
-					try {
-						novaVariacao.setChave(gerarChave(novaVariacao));
-						novaVariacao.setStatus(StatusEnum.Neutro);
-						variacoes.add(novaVariacao);
-					} catch (Exception e) {}
 				}
 			}
-		} repositorio.saveAll(variacoes);		
+		} repositorio.saveAll(variacoes);	
 	}
 	
 	public VariacaoModelo encontrarPorId (String chave) {
