@@ -135,7 +135,8 @@ public class VariacaoModeloServico {
 		} else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Variacão Não Encontrada");
 	}
 
-	public Page<VariacaoModelo> filtrar(String modeloId, String produtoId, String tituloId, Pageable paginavel) {
+	public Page<VariacaoModelo> filtrar(String modeloId, String produtoId, String tituloId, Integer pagina, Integer tamanho) {
+		Pageable paginavel = PageRequest.of(pagina, tamanho);
 		return repositorio.filtrarPaginado(modeloId, produtoId, tituloId, paginavel);
 	}
 }

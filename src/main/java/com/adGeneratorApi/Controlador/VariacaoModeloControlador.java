@@ -2,7 +2,6 @@ package com.adGeneratorApi.Controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +37,13 @@ public class VariacaoModeloControlador {
 	
 	@Operation(summary = "Filtrar Todos")
 	@GetMapping("filtrar")
-	public ResponseEntity<Page<VariacaoModelo>> filtrarPaginado (@RequestParam(value="modeloId", required=false) String modeloId,
+	public ResponseEntity<Page<VariacaoModelo>> filtrarPaginado (
+			@RequestParam(value="modeloId", required=false) String modeloId,
 			@RequestParam(value="produtoId", required=false) String produtoId,
 			@RequestParam(value="tituloId", required=false) String tituloId,
-			@RequestParam(value="paginavel", required=true) Pageable paginavel) {
-		return ResponseEntity.ok(servico.filtrar(modeloId, produtoId, tituloId, paginavel));
+			@RequestParam(value="pagina", required=true) Integer pagina,
+			@RequestParam(value="tamanho", required=true) Integer tamanho) {
+		return ResponseEntity.ok(servico.filtrar(modeloId, produtoId, tituloId, pagina, tamanho));
 	}
 	
 	@Operation(summary = "Encontrar por Id")
