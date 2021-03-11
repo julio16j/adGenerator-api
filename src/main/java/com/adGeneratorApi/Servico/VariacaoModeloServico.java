@@ -9,11 +9,13 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.adGeneratorApi.Dominio.DTO.VariacaoModeloDTO;
 import com.adGeneratorApi.Dominio.Entidade.Cartao;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
 import com.adGeneratorApi.Dominio.Entidade.Modelo;
@@ -44,14 +46,12 @@ public class VariacaoModeloServico {
 	@Autowired
 	ModeloServico modeloServico;
 	
-	public Page<VariacaoModelo> listarTodosPaginado (Integer pagina, Integer tamanho, Sort sort) {
-		sort = sort == null ? Sort.by("produto") : sort;
+	public Page<VariacaoModelo> listarTodos (Integer pagina, Integer tamanho, Sort ordenarPor) {
+		pagina = pagina == null ? 0 : pagina;
 		tamanho = tamanho == null ? 5 : tamanho;
-		return repositorio.listarTodosPaginado(PageRequest.of(pagina, tamanho, sort));
-	}
-	
-	public List<VariacaoModelo> listarTodos () {
-		return repositorio.findAll();
+		ordenarPor = ordenarPor == null ? Sort.unsorted() : ordenarPor;
+		Pageable paginavel = PageRequest.of(pagina, tamanho, ordenarPor);
+		return repositorio.findAll(paginavel);
 	}
 	
 	public String gerarChave(VariacaoModelo novaVariacao) {
@@ -134,5 +134,11 @@ public class VariacaoModeloServico {
 		if (variacaoEncontrada.isPresent()) {
 			return variacaoEncontrada.get();
 		} else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Variacão Não Encontrada");
+	}
+
+	public Page<VariacaoModelo> filtrar(VariacaoModeloDTO filtroDTO) {
+		Pageable paginavel = PageRequest.of(filtroDTO.getPage(), filtroDTO.getSize(),
+				Sort.by((String[]) filtroDTO.getSort().toArray()));
+		return repositorio.filtrarPaginado(filtroDTO, paginavel);
 	}
 }

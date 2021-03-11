@@ -1,7 +1,5 @@
 package com.adGeneratorApi.Controlador;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.adGeneratorApi.Dominio.DTO.VariacaoModeloDTO;
 import com.adGeneratorApi.Dominio.Entidade.VariacaoModelo;
 import com.adGeneratorApi.Servico.VariacaoModeloServico;
 
@@ -29,18 +28,18 @@ public class VariacaoModeloControlador {
 	@Autowired
 	VariacaoModeloServico servico;
 	
-	@Operation(summary = "Listar Com Paginação")
-	@GetMapping
-	public ResponseEntity<Page<VariacaoModelo>> listarPaginado(@RequestParam(value="pagina", required=true) Integer pagina,
-															   @RequestParam(value="tamanho", required=false) Integer tamanho,
-															   @RequestParam(value="ordenarPor",required=false) Sort ordenarPor) {
-		return ResponseEntity.ok(servico.listarTodosPaginado(pagina, tamanho, ordenarPor));
-	}
-	
 	@Operation(summary = "Listar Todos")
 	@GetMapping("todos")
-	public ResponseEntity<List<VariacaoModelo>> listarPaginado() {
-		return ResponseEntity.ok(servico.listarTodos());
+	public ResponseEntity<Page<VariacaoModelo>> listarPaginado (@RequestParam(value="pagina", required=true) Integer pagina,
+			   @RequestParam(value="tamanho", required=false) Integer tamanho,
+			   @RequestParam(value="ordenarPor",required=false) Sort ordenarPor) {
+		return ResponseEntity.ok(servico.listarTodos(pagina, tamanho, ordenarPor));
+	}
+	
+	@Operation(summary = "Filtrar Todos")
+	@GetMapping("filtrar")
+	public ResponseEntity<Page<VariacaoModelo>> filtrarPaginado (@RequestParam(value="variacaoModelo", required=true) VariacaoModeloDTO filtroDTO) {
+		return ResponseEntity.ok(servico.filtrar(filtroDTO));
 	}
 	
 	@Operation(summary = "Encontrar por Id")
