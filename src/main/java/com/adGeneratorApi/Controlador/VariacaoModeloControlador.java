@@ -1,7 +1,5 @@
 package com.adGeneratorApi.Controlador;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -29,18 +27,23 @@ public class VariacaoModeloControlador {
 	@Autowired
 	VariacaoModeloServico servico;
 	
-	@Operation(summary = "Listar Com Paginação")
-	@GetMapping
-	public ResponseEntity<Page<VariacaoModelo>> listarPaginado(@RequestParam(value="pagina", required=true) Integer pagina,
-															   @RequestParam(value="tamanho", required=false) Integer tamanho,
-															   @RequestParam(value="ordenarPor",required=false) Sort ordenarPor) {
-		return ResponseEntity.ok(servico.listarTodosPaginado(pagina, tamanho, ordenarPor));
-	}
-	
 	@Operation(summary = "Listar Todos")
 	@GetMapping("todos")
-	public ResponseEntity<List<VariacaoModelo>> listarPaginado() {
-		return ResponseEntity.ok(servico.listarTodos());
+	public ResponseEntity<Page<VariacaoModelo>> listarPaginado (@RequestParam(value="pagina", required=true) Integer pagina,
+			   @RequestParam(value="tamanho", required=false) Integer tamanho,
+			   @RequestParam(value="ordenarPor",required=false) Sort ordenarPor) {
+		return ResponseEntity.ok(servico.listarTodos(pagina, tamanho, ordenarPor));
+	}
+	
+	@Operation(summary = "Filtrar Todos")
+	@GetMapping("filtrar")
+	public ResponseEntity<Page<VariacaoModelo>> filtrarPaginado (
+			@RequestParam(value="modeloId", required=false) String modeloId,
+			@RequestParam(value="produtoId", required=false) String produtoId,
+			@RequestParam(value="tituloId", required=false) String tituloId,
+			@RequestParam(value="pagina", required=true) Integer pagina,
+			@RequestParam(value="tamanho", required=true) Integer tamanho) {
+		return ResponseEntity.ok(servico.filtrar(modeloId, produtoId, tituloId, pagina, tamanho));
 	}
 	
 	@Operation(summary = "Encontrar por Id")
