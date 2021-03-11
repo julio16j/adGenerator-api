@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.adGeneratorApi.Dominio.DTO.VariacaoModeloDTO;
 import com.adGeneratorApi.Dominio.Entidade.Cartao;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
 import com.adGeneratorApi.Dominio.Entidade.Modelo;
@@ -136,9 +135,7 @@ public class VariacaoModeloServico {
 		} else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Variacão Não Encontrada");
 	}
 
-	public Page<VariacaoModelo> filtrar(VariacaoModeloDTO filtroDTO) {
-		Pageable paginavel = PageRequest.of(filtroDTO.getPage(), filtroDTO.getSize(),
-				Sort.by((String[]) filtroDTO.getSort().toArray()));
-		return repositorio.filtrarPaginado(filtroDTO, paginavel);
+	public Page<VariacaoModelo> filtrar(String modeloId, String produtoId, String tituloId, Pageable paginavel) {
+		return repositorio.filtrarPaginado(modeloId, produtoId, tituloId, paginavel);
 	}
 }

@@ -2,6 +2,7 @@ package com.adGeneratorApi.Controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.adGeneratorApi.Dominio.DTO.VariacaoModeloDTO;
 import com.adGeneratorApi.Dominio.Entidade.VariacaoModelo;
 import com.adGeneratorApi.Servico.VariacaoModeloServico;
 
@@ -38,8 +38,11 @@ public class VariacaoModeloControlador {
 	
 	@Operation(summary = "Filtrar Todos")
 	@GetMapping("filtrar")
-	public ResponseEntity<Page<VariacaoModelo>> filtrarPaginado (@RequestParam(value="variacaoModelo", required=true) VariacaoModeloDTO filtroDTO) {
-		return ResponseEntity.ok(servico.filtrar(filtroDTO));
+	public ResponseEntity<Page<VariacaoModelo>> filtrarPaginado (@RequestParam(value="modeloId", required=false) String modeloId,
+			@RequestParam(value="produtoId", required=false) String produtoId,
+			@RequestParam(value="tituloId", required=false) String tituloId,
+			@RequestParam(value="paginavel", required=true) Pageable paginavel) {
+		return ResponseEntity.ok(servico.filtrar(modeloId, produtoId, tituloId, paginavel));
 	}
 	
 	@Operation(summary = "Encontrar por Id")
