@@ -68,9 +68,9 @@ public class CartaoControlador {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Cartao> editarCartao (@RequestPart("cartao") String novoCartao, @RequestPart("imagemCartao") MultipartFile imagemCartao) {
 		try {
-			return ResponseEntity.ok(servico.cadastrarCartao(novoCartao, imagemCartao));
+			return ResponseEntity.ok(servico.editarCartao(novoCartao, imagemCartao));
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Erro ao Salvar a imagem" + e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Erro ao Salvar a imagem, " + e.getMessage());
 		}
 	}
 	
