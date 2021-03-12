@@ -41,9 +41,9 @@ public class VariacaoModeloControlador {
 			@RequestParam(value="modeloId", required=false) String modeloId,
 			@RequestParam(value="produtoId", required=false) String produtoId,
 			@RequestParam(value="tituloId", required=false) String tituloId,
-			@RequestParam(value="pagina", required=true) Integer pagina,
-			@RequestParam(value="tamanho", required=true) Integer tamanho) {
-		return ResponseEntity.ok(servico.filtrar(modeloId, produtoId, tituloId, pagina, tamanho));
+			@RequestParam(value="page", required=true) Integer page,
+			@RequestParam(value="size", required=true) Integer size) {
+		return ResponseEntity.ok(servico.filtrar(modeloId, produtoId, tituloId, page, size));
 	}
 	
 	@Operation(summary = "Encontrar por Id")
