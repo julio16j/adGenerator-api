@@ -94,7 +94,7 @@ public class VariacaoModeloServico {
 							Set<DescricaoValor> descricoesNovas = new HashSet<>();
 							Set<Cartao> cartoesNovas = new HashSet<>();
 							for (int descricaoI = 0; descricaoI < numeroDescricoes; descricaoI++) {
-								if (descricoes.size() <= contadorDescricao) {
+								if (descricoes.size() <= contadorDescricaoAuxiliar) {
 									deveContinuarDescricao = false;
 									break;
 								}

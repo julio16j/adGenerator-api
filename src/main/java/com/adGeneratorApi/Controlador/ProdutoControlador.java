@@ -60,7 +60,7 @@ public class ProdutoControlador {
 	@Operation(summary = "Criar um novo produto")
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Produto> criarProduto (@RequestPart("produto") String novoProduto,
+	public ResponseEntity<Produto> criarProduto (@RequestPart("novoProduto") String novoProduto,
 			@RequestPart("imagemProduto") MultipartFile imagemProduto) {
 		try {
 			return ResponseEntity.ok(servico.cadastrarProduto(novoProduto, imagemProduto));
