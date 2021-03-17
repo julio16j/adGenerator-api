@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class VariacaoModeloControlador {
 	
 	@Operation(summary = "Listar Todos")
 	@GetMapping("todos")
-	public ResponseEntity<Page<VariacaoModelo>> listarPaginado (@RequestParam(value="pagina", required=true) Integer pagina,
+	public ResponseEntity<Page<VariacaoModelo>> listarPaginado (@RequestParam(value="pagina", required=false) Integer pagina,
 			   @RequestParam(value="tamanho", required=false) Integer tamanho,
 			   @RequestParam(value="ordenarPor",required=false) Sort ordenarPor) {
 		return ResponseEntity.ok(servico.listarTodos(pagina, tamanho, ordenarPor));
@@ -62,6 +63,16 @@ public class VariacaoModeloControlador {
 			throw error;
 		}
 		
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<?> deleteAll() {
+		try {
+			servico.deleteAll();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
 	}
 	
 }
