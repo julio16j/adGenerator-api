@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,6 +59,13 @@ public class ModeloControlador {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Modelo> criarModelo (@RequestBody @Valid ModeloDTO novoModelo) {
 		return ResponseEntity.ok(servico.cadastrarModelo(novoModelo));
+	}
+	
+	@Operation(summary = "Editar um modelo")
+	@PutMapping
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Modelo> editarModelo (@RequestBody @Valid ModeloDTO novoModelo) {
+		return ResponseEntity.ok(servico.editarModelo(novoModelo));
 	}
 	
 	@Operation(summary = "Deletar um modelo pelo Id")

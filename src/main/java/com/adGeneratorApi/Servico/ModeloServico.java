@@ -36,10 +36,19 @@ public class ModeloServico {
 	}
 	
 	public Modelo cadastrarModelo (ModeloDTO dto) {
+		if (repositorio.findById(dto.getNome()).isPresent()) throw new RuntimeException("Modelo já existente");
+
 		Modelo novoModelo = new Modelo(dto);
 		Modelo modeloSalvo = repositorio.save(novoModelo);
 		return modeloSalvo;
+	}
+	
+	public Modelo editarModelo (ModeloDTO dto) {
+		if (encontrarPorId(dto.getNome()) == null) throw new RuntimeException("Modelo não encontrado");
 		
+		Modelo novoModelo = new Modelo(dto);
+		Modelo modeloSalvo = repositorio.save(novoModelo);
+		return modeloSalvo;
 	}
 
 	public Modelo encontrarPorId(String modeloId) {
