@@ -2,8 +2,9 @@ package com.adGeneratorApi.Dominio.Entidade;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -11,10 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.adGeneratorApi.Dominio.DTO.ModeloDTO;
-import com.adGeneratorApi.Dominio.Embutivel.Cartao;
-import com.adGeneratorApi.Dominio.Embutivel.Descricao;
-import com.adGeneratorApi.Dominio.Embutivel.Imagem;
-import com.adGeneratorApi.Dominio.Embutivel.Titulo;
+import com.adGeneratorApi.Dominio.Embutivel.Elemento;
 
 @Entity
 public class Modelo implements Serializable{
@@ -25,29 +23,33 @@ public class Modelo implements Serializable{
 	private String nome;
 	
 	@Embedded
-	private Imagem imagem;
+	@AttributeOverrides({
+		  @AttributeOverride( name = "estiloInicial", column = @Column(name = "ImagemEstiloInicial")),
+		  @AttributeOverride( name = "transformacao", column = @Column(name = "ImagemTransformacao"))
+	})
+	private Elemento imagem;
 	
 	@Embedded
-	@Column
-	private Titulo titulo;
+	@AttributeOverrides({
+		  @AttributeOverride( name = "estiloInicial", column = @Column(name = "TituloEstiloInicial")),
+		  @AttributeOverride( name = "transformacao", column = @Column(name = "TituloTransformacao"))
+	})
+	private Elemento titulo;
 	
-	@Column
 	@ElementCollection
-	private List<Descricao> descricoes;
+	private List<Elemento> descricoes;
 	
-	@Column
 	@ElementCollection
-	private List<Cartao> cartoes;
+	private List<Elemento> cartoes;
 	
 	public Modelo () {}
-	
+
 	public Modelo(ModeloDTO dto) {
 		nome = dto.getNome();
 		imagem = dto.getImagem();
 		titulo = dto.getTitulo();
 		descricoes = dto.getDescricoes();
 		cartoes = dto.getCartoes();
-		
 	}
 
 	public String getNome() {
@@ -58,55 +60,37 @@ public class Modelo implements Serializable{
 		this.nome = nome;
 	}
 
-	public Imagem getImagem() {
+	public Elemento getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(Imagem imagem) {
+	public void setImagem(Elemento imagem) {
 		this.imagem = imagem;
 	}
 
-	public List<Descricao> getDescricoes() {
-		return descricoes;
-	}
-
-	public void setDescricoes(List<Descricao> descricoes) {
-		this.descricoes = descricoes;
-	}
-
-	public List<Cartao> getCartoes() {
-		return cartoes;
-	}
-
-	public void setCartoes(List<Cartao> cartoes) {
-		this.cartoes = cartoes;
-	}
-
-	public Titulo getTitulo() {
+	public Elemento getTitulo() {
 		return titulo;
 	}
 
-	public void setTitulo(Titulo titulo) {
+	public void setTitulo(Elemento titulo) {
 		this.titulo = titulo;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(cartoes, descricoes, imagem, nome, titulo);
+	public List<Elemento> getDescricoes() {
+		return descricoes;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Modelo other = (Modelo) obj;
-		return Objects.equals(cartoes, other.cartoes) && Objects.equals(descricoes, other.descricoes)
-				&& Objects.equals(imagem, other.imagem) && Objects.equals(nome, other.nome)
-				&& Objects.equals(titulo, other.titulo);
+	public void setDescricoes(List<Elemento> descricoes) {
+		this.descricoes = descricoes;
 	}
+
+	public List<Elemento> getCartoes() {
+		return cartoes;
+	}
+
+	public void setCartoes(List<Elemento> cartoes) {
+		this.cartoes = cartoes;
+	}
+	
 
 }
