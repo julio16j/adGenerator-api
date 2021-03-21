@@ -128,7 +128,7 @@ public class VariacaoModeloServico {
 				if (!deveContinuarCartao || !deveContinuarDescricao) break;
 				
 				VariacaoModelo novaVariacao = gerarVariacao(setup.getTitulo(), setup.getProduto(), cartoesNovas, descricoesNovas, setup.getModelo());
-				setup.getVariacoes().add(novaVariacao);
+				if (novaVariacao.getChave() != null) setup.getVariacoes().add(novaVariacao);
 			}
 			
 			contadorDescricao = contadorDescricaoAuxiliar;
@@ -193,5 +193,9 @@ public class VariacaoModeloServico {
 	
 	public void deleteAll() {
 		repositorio.deleteAll();
+	}
+
+	public void deleteByChave(String chave) {
+		repositorio.deleteById(chave);
 	}
 }

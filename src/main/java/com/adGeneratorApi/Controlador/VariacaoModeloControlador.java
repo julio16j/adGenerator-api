@@ -66,12 +66,22 @@ public class VariacaoModeloControlador {
 	}
 	
 	@DeleteMapping
-	public ResponseEntity<?> deleteAll() {
+	public ResponseEntity<?> deleteAll () {
 		try {
 			servico.deleteAll();
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+		} catch (Exception error) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.getMessage());
+		}
+	}
+	
+	@DeleteMapping("{chave}")
+	public ResponseEntity<?> deleteById (@PathVariable String chave) {
+		try {
+			servico.deleteByChave(chave);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		} catch (Exception error) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, error.getMessage());
 		}
 	}
 	
