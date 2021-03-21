@@ -60,6 +60,7 @@ public class VariacaoModeloServico {
 		chave += novaVariacao.getModelo().getNome();
 		chave += novaVariacao.getProduto().getNome();
 		chave += novaVariacao.getTitulo().getDescricao();
+		chave += novaVariacao.getInvertida();
 		
 		for (DescricaoValor descricao: novaVariacao.getDescricoes()) {
 			chave += descricao.getDescricao();
@@ -96,9 +97,22 @@ public class VariacaoModeloServico {
 							numeroDescricoes, numeroCartoes, produto, titulo));
 				}
 			}
-		} 
-		
-		repositorio.saveAll(variacoes);	
+		}
+		List<VariacaoModelo> copiaVariacoes = gerarVariacoesInvertidas(variacoes);
+		repositorio.saveAll(copiaVariacoes);	
+	}
+
+	private List<VariacaoModelo> gerarVariacoesInvertidas(List<VariacaoModelo> variacoes) {
+		List<VariacaoModelo> copiaVariacoes = new ArrayList<>(variacoes);
+		for (VariacaoModelo variacao : variacoes) {
+			VariacaoModelo variacaoCopia = new VariacaoModelo(variacao);
+			variacaoCopia.setInvertida(true);
+			try {
+				variacaoCopia.setChave(gerarChave(variacaoCopia));
+				copiaVariacoes.add(variacaoCopia);
+			} catch (Exception e) {}
+		}
+		return copiaVariacoes;
 	}
 
 	private void gerarTodasVariacoes(SetupVariacaoDTO setup) {

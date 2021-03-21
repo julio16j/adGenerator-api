@@ -56,7 +56,23 @@ public class VariacaoModelo implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusEnum status;
 	
-	public VariacaoModelo () {}
+	@Column
+	private Boolean invertida;
+	
+	public VariacaoModelo () {
+		invertida = false;
+	}
+
+	public VariacaoModelo(VariacaoModelo copia) {
+		super();
+		this.modelo = copia.getModelo();
+		this.produto = copia.getProduto();
+		this.titulo = copia.getTitulo();
+		this.descricoes = copia.descricoes;
+		this.cartoes = copia.getCartoes();
+		this.status = copia.getStatus();
+		this.invertida = copia.getInvertida();
+	}
 
 	public String getChave() {
 		return chave;
@@ -112,6 +128,14 @@ public class VariacaoModelo implements Serializable {
 
 	public void setStatus(StatusEnum status) {
 		this.status = status;
+	}
+
+	public Boolean getInvertida() {
+		return invertida;
+	}
+
+	public void setInvertida(Boolean invertida) {
+		this.invertida = invertida;
 	}
 	
 }
