@@ -21,6 +21,7 @@ import com.adGeneratorApi.Dominio.Entidade.Cartao;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
 import com.adGeneratorApi.Dominio.Entidade.Modelo;
 import com.adGeneratorApi.Dominio.Entidade.Produto;
+import com.adGeneratorApi.Dominio.Entidade.TemaCor;
 import com.adGeneratorApi.Dominio.Entidade.Titulo;
 import com.adGeneratorApi.Dominio.Entidade.VariacaoModelo;
 import com.adGeneratorApi.Dominio.Enum.StatusEnum;
@@ -47,6 +48,9 @@ public class VariacaoModeloServico {
 	@Autowired
 	ModeloServico modeloServico;
 	
+	@Autowired
+	TemaCorServico temaCorServico;
+	
 	public Page<VariacaoModelo> listarTodos (Integer pagina, Integer tamanho, Sort ordenarPor) {
 		pagina = pagina == null ? 0 : pagina;
 		tamanho = tamanho == null ? 5 : tamanho;
@@ -61,6 +65,7 @@ public class VariacaoModeloServico {
 		chave += novaVariacao.getProduto().getNome();
 		chave += novaVariacao.getTitulo().getDescricao();
 		chave += novaVariacao.getInvertida();
+		chave += novaVariacao.getTemaCor().getCorFundo();
 		
 		for (DescricaoValor descricao: novaVariacao.getDescricoes()) {
 			chave += descricao.getDescricao();
@@ -101,7 +106,6 @@ public class VariacaoModeloServico {
 		List<VariacaoModelo> copiaVariacoes = gerarVariacoesInvertidas(variacoes);
 		repositorio.saveAll(copiaVariacoes);	
 	}
-
 	private List<VariacaoModelo> gerarVariacoesInvertidas(List<VariacaoModelo> variacoes) {
 		List<VariacaoModelo> copiaVariacoes = new ArrayList<>(variacoes);
 		for (VariacaoModelo variacao : variacoes) {
@@ -114,7 +118,7 @@ public class VariacaoModeloServico {
 		}
 		return copiaVariacoes;
 	}
-
+	
 	private void gerarTodasVariacoes(SetupVariacaoDTO setup) {
 		int contadorDescricao = 0;
 		int contadorCartao = 0;
@@ -140,9 +144,11 @@ public class VariacaoModeloServico {
 				contadorCartao = contadorCartaoRetorno.getContador();
 				
 				if (!deveContinuarCartao || !deveContinuarDescricao) break;
-				
-				VariacaoModelo novaVariacao = gerarVariacao(setup.getTitulo(), setup.getProduto(), cartoesNovas, descricoesNovas, setup.getModelo());
-				if (novaVariacao.getChave() != null) setup.getVariacoes().add(novaVariacao);
+				List<TemaCor> temas = temaCorServico.listarTodos();
+				for (TemaCor tema : temas) {
+					VariacaoModelo novaVariacao = gerarVariacao(setup.getTitulo(), setup.getProduto(), cartoesNovas, descricoesNovas, setup.getModelo(), tema);
+					if (novaVariacao.getChave() != null) setup.getVariacoes().add(novaVariacao);
+				}
 			}
 			
 			contadorDescricao = contadorDescricaoAuxiliar;
@@ -176,7 +182,7 @@ public class VariacaoModeloServico {
 		return new ContadorDTO(contadorCartao, deveContinuarCartao);
 	}
 	
-	public VariacaoModelo gerarVariacao(Titulo titulo, Produto produto, Set<Cartao> cartoes, Set<DescricaoValor> descricoes, Modelo modelo) {
+	public VariacaoModelo gerarVariacao(Titulo titulo, Produto produto, Set<Cartao> cartoes, Set<DescricaoValor> descricoes, Modelo modelo, TemaCor tema) {
 		VariacaoModelo novaVariacao = new VariacaoModelo();
 		
 		novaVariacao.setTitulo(titulo);
@@ -184,6 +190,7 @@ public class VariacaoModeloServico {
 		novaVariacao.setCartoes(cartoes);
 		novaVariacao.setDescricoes(descricoes);
 		novaVariacao.setModelo(modelo);
+		novaVariacao.setTemaCor(tema);
 		
 		try {
 			novaVariacao.setChave(gerarChave(novaVariacao));

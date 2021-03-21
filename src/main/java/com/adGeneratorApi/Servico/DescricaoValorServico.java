@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.DescricaoValorDTO;
 import com.adGeneratorApi.Dominio.Entidade.DescricaoValor;
@@ -23,7 +25,7 @@ public class DescricaoValorServico {
 	}
 	
 	public DescricaoValor cadastrarDescricaoValor (DescricaoValorDTO dto) {
-		if (repositorio.findById(dto.getDescricao()).isPresent()) throw new RuntimeException("DescricaoValor já existente");
+		if (repositorio.findById(dto.getDescricao()).isPresent()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "DescricaoValor já existente");
 		
 		DescricaoValor novoDescricaoValor = new DescricaoValor(dto);
 		DescricaoValor descricaoValorSalvo = repositorio.save(novoDescricaoValor);
@@ -31,7 +33,7 @@ public class DescricaoValorServico {
 	}
 	
 	public DescricaoValor editarDescricaoValor (DescricaoValorDTO dto) {
-		if (encontrarPorId(dto.getDescricao()) == null) throw new RuntimeException("DescricaoValor não encontrado");
+		if (encontrarPorId(dto.getDescricao()) == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND , "DescricaoValor não Encontrada");
 		
 		DescricaoValor novoDescricaoValor = new DescricaoValor(dto);
 		DescricaoValor descricaoValorSalvo = repositorio.save(novoDescricaoValor);
@@ -40,7 +42,7 @@ public class DescricaoValorServico {
 
 	public DescricaoValor encontrarPorId(String descricaoValorId) {
 		Optional<DescricaoValor> descricaoValorEncontrado = repositorio.findById(descricaoValorId);
-		if (descricaoValorEncontrado.isEmpty()) throw new RuntimeException("DescricaoValor não encontrado");
+		if (descricaoValorEncontrado.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND , "DescricaoValor não Encontrada");
 		return descricaoValorEncontrado.get();
 	}
 	

@@ -36,6 +36,10 @@ public class VariacaoModelo implements Serializable {
 	@JoinColumn(name = "titulo")
 	private Titulo titulo;
 	
+	@ManyToOne
+	@JoinColumn(name = "temaCorId", referencedColumnName = "id")
+	private TemaCor temaCor;
+	
 	@ManyToMany
 	@JsonManagedReference
 	@JoinTable(
@@ -72,6 +76,7 @@ public class VariacaoModelo implements Serializable {
 		this.cartoes = copia.getCartoes();
 		this.status = copia.getStatus();
 		this.invertida = copia.getInvertida();
+		this.temaCor = copia.getTemaCor();
 	}
 
 	public String getChave() {
@@ -136,6 +141,14 @@ public class VariacaoModelo implements Serializable {
 
 	public void setInvertida(Boolean invertida) {
 		this.invertida = invertida;
+	}
+
+	public TemaCor getTemaCor() {
+		return temaCor;
+	}
+
+	public void setTemaCor(TemaCor temaCor) {
+		this.temaCor = temaCor;
 	}
 	
 }
