@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.adGeneratorApi.Dominio.Entidade.TemaCor;
-import com.adGeneratorApi.Dominio.Entidade.Usuario;
 
 @Repository
 public interface TemaCorRepositorio extends JpaRepository<TemaCor, Long> {
@@ -18,5 +17,5 @@ public interface TemaCorRepositorio extends JpaRepository<TemaCor, Long> {
 			+ "AND (:corFonte IS NULL OR d.corFonte LIKE :corFonte || '%') ")
 	public List<TemaCor> findByFilters(@Param("corFundo") String corFundo, @Param("corFonte") String corFonte);
 	
-	public Optional<Usuario> findByCorFundo (String corFundo);
+	public Optional<TemaCor> findByCorFundo (String corFundo);
 }
