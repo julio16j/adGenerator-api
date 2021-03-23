@@ -29,6 +29,9 @@ public class Usuario implements Serializable{
 	@Column(name = "Senha")
 	private String senha;
 	
+	@Column(name = "Telefone")
+	private String telefone;
+	
 	@Column(name = "isAdmin")
 	private Boolean isAdmin;
 	
@@ -37,8 +40,9 @@ public class Usuario implements Serializable{
 	public Usuario(UsuarioDTO dto) {
 		this.nome = dto.getNome();
 		this.email = dto.getEmail();
-		this.isAdmin = dto.getIsAdmin();
 		this.senha = dto.getSenha();
+		this.telefone = dto.getTelefone();
+		this.isAdmin = dto.getIsAdmin() == null ? false : dto.getIsAdmin();
 	}
 
 	public Long getId() {
@@ -81,4 +85,11 @@ public class Usuario implements Serializable{
 		this.isAdmin = isAdmin;
 	}
 
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
 }

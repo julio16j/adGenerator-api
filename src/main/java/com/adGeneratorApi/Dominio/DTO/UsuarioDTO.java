@@ -12,6 +12,7 @@ public class UsuarioDTO {
 	@NotNull
 	private String senha;
 	
+	private String telefone;
 	
 	private Boolean isAdmin;
 	
@@ -39,5 +40,11 @@ public class UsuarioDTO {
 	}
 	public void setIsAdmin(Boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+	public String getTelefone() {
+		return this.telefone;
+	}
+	public void setTelefone (String telefone) {
+		this.telefone = telefone;
 	}
 }

@@ -25,6 +25,10 @@ public class Anuncio implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "variacaoModeloId", referencedColumnName = "chave")
 	private VariacaoModelo variacaoModelo;
+
+	@ManyToOne
+	@JoinColumn(name = "usuarioId", referencedColumnName = "id")
+	private Usuario usuarioDivulgador;
 	
 	@ManyToOne
 	@JoinColumn(name = "contaOlxId", referencedColumnName = "id")
@@ -84,4 +88,12 @@ public class Anuncio implements Serializable {
 		this.dataPostado = dataPostado;
 	}
 
+	public Usuario getUsuarioDivulgador() {
+		return usuarioDivulgador;
+	}
+
+	public void setUsuarioDivulgador(Usuario usuarioDivulgador) {
+		this.usuarioDivulgador = usuarioDivulgador;
+	}
+	
 }

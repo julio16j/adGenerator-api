@@ -57,6 +57,10 @@ public class UsuarioServico {
 		this.repositorio.deleteById(usuarioId);
 		
 	}
+
+	public List<Usuario> filtrarDivulgadores(String email, String nome) {
+		return repositorio.filtrarDivulgadores(email, nome);
+	}
 	
 	
 }
