@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,12 +21,16 @@ public class UsuarioServico {
 	@Autowired
 	UsuarioRepositorio repositorio;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	public List<Usuario> listarTodos () {
 		return repositorio.findAll();
 	}
 	
 	public Usuario criarUsuario (UsuarioDTO dto) {
 		validarUsuarioUnico(dto.getEmail());
+		dto.setSenha(passwordEncoder.encode(dto.getSenha()));
 		Usuario usuario = new Usuario(dto);
 		Usuario usuarioSalvo = repositorio.save(usuario);
 		return usuarioSalvo;
@@ -47,7 +52,7 @@ public class UsuarioServico {
 	public Usuario login(@Valid UsuarioDTO emailSenha) throws ResponseStatusException {
 		Optional<Usuario> usuarioEncontrado = repositorio.findByEmail(emailSenha.getEmail());
 		if (usuarioEncontrado.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND ,"Usuario não Encontrado");
-		if (usuarioEncontrado.get().getSenha().equals(emailSenha.getSenha())) return usuarioEncontrado.get();
+		if (passwordEncoder.matches(emailSenha.getSenha(), usuarioEncontrado.get().getSenha())) return usuarioEncontrado.get();
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email ou Senha Incorretos");
 	}
 	
