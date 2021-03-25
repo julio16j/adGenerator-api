@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,6 +73,13 @@ public class UsuarioControlador {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Usuario> criarUsuario (@RequestBody @Valid UsuarioDTO novoUsuario) {
 		return ResponseEntity.ok(servico.criarUsuario(novoUsuario));
+	}
+	
+	@Operation(summary = "Editar um usuario existente")
+	@PutMapping
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Usuario> editarusuario(@RequestBody @Valid Usuario novousuario) {
+		return ResponseEntity.ok(servico.editarUsuario(novousuario));
 	}
 	
 	@Operation(summary = "Deletar um usuário pelo Id")

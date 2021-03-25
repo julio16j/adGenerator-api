@@ -66,6 +66,15 @@ public class UsuarioServico {
 	public List<Usuario> filtrarDivulgadores(String email, String nome) {
 		return repositorio.filtrarDivulgadores(email, nome);
 	}
+
+	public Usuario editarUsuario(@Valid Usuario usuario) {
+		Usuario usuarioEncontrado = encontrarPorId(usuario.getId());
+		usuarioEncontrado.setEmail(usuario.getEmail());
+		usuarioEncontrado.setNome(usuario.getNome());
+		usuarioEncontrado.setTelefone(usuario.getTelefone());
+		Usuario usuarioSalvo = repositorio.save(usuarioEncontrado);
+		return usuarioSalvo;
+	}
 	
 	
 }
