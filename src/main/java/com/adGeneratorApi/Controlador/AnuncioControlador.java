@@ -70,4 +70,16 @@ public class AnuncioControlador {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
+	
+	@Operation(summary = "Obter total anuncios no dia por divulgador")
+	@GetMapping("/dia/{divulgadorId}")
+	public ResponseEntity<Integer> obterTotalAnunciosDia (@PathVariable Long divulgadorId) {
+		return ResponseEntity.ok(servico.obterTotalAnunciosDia(divulgadorId));
+	}
+	
+	@Operation(summary = "Obter total anuncios no mês por divulgador")
+	@GetMapping("/mes/{divulgadorId}")
+	public ResponseEntity<Integer> obterTotalAnunciosMes (@PathVariable Long divulgadorId) {
+		return ResponseEntity.ok(servico.obterTotalAnunciosMes(divulgadorId));
+	}
 }

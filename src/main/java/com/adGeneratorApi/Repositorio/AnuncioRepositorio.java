@@ -14,10 +14,21 @@ import com.adGeneratorApi.Dominio.Entidade.VariacaoModelo;
 
 @Repository
 public interface AnuncioRepositorio extends JpaRepository<Anuncio, Long> {
+	
 	@Query("SELECT d FROM Anuncio d "
 			+ "WHERE (:variacaoModeloChave IS NULL OR d.variacaoModelo.chave = :chave) "
 			+ "AND (:contaOlxId  IS NULL OR d.contaOlx.id = :contaOlxId) ")
 	public List<Anuncio> findByFilters(@Param("variacaoModeloChave") String variacaoModeloChave, @Param("contaOlxId") Long contaOlxId);
+	
+	@Query("SELECT count(a.id) from Anuncio a "
+			+ "where a.usuarioDivulgador.id = :usuarioId "
+			+ "AND function('date_format',a.dataPostado, '%m') = function('date_format',a.dataPostado, '%m')")
+	public Integer totalAnuncioPorMes (@Param("usuarioId") Long usuarioId );
+	
+	@Query("SELECT count(a.id) from Anuncio a "
+			+ "where a.usuarioDivulgador.id = :usuarioId "
+			+ "AND function('date_format',a.dataPostado, '%d-%m-%y') = function('date_format',CURRENT_DATE, '%d-%m-%y')")
+	public Integer totalAnuncioPorDia (@Param("usuarioId") Long usuarioId );
 	
 	public List<Anuncio> findByContaOlx (ContaOlx contaOlx);
 	

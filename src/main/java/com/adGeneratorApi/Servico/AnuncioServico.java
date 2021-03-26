@@ -44,6 +44,14 @@ public class AnuncioServico {
 		repositorio.deleteById(id);
 		
 	}
+
+	public Integer obterTotalAnunciosMes(Long divulgadorId) {
+		return repositorio.totalAnuncioPorMes(divulgadorId);
+	}
+
+	public Integer obterTotalAnunciosDia(Long divulgadorId) {
+		return repositorio.totalAnuncioPorDia(divulgadorId);
+	}
 	
 	
 }
