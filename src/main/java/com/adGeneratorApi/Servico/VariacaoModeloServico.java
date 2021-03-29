@@ -124,12 +124,53 @@ public class VariacaoModeloServico {
 		int contadorCartao = 0;
 		int contadorDescricaoAuxiliar = 0;
 		boolean deveContinuarDescricao = true;
+		boolean deveContinuarCartao = true;
 		
-		while (contadorDescricao  < setup.getDescricoes().size() && deveContinuarDescricao ) {
-			boolean deveContinuarCartao = true;
+		if (setup.getNumeroDescricoes() == 0 && setup.getNumeroCartoes() == 0) {
+			Set<DescricaoValor> descricoesNovas = new HashSet<>();
+			Set<Cartao> cartoesNovas = new HashSet<>();
+			
+			gerarVariacoesComTema(setup, cartoesNovas, descricoesNovas);
+			return;
+		}
+		
+		if (setup.getNumeroDescricoes() == 0) {
+			while (deveContinuarCartao) {
+				Set<DescricaoValor> descricoesNovas = new HashSet<>();
+				Set<Cartao> cartoesNovas = new HashSet<>();
+				
+				ContadorDTO contadorCartaoRetorno = adicionarCartoes(contadorCartao, setup, deveContinuarCartao, cartoesNovas);
+				deveContinuarCartao = contadorCartaoRetorno.getDeveParar();
+				contadorCartao = contadorCartaoRetorno.getContador();
+				
+				if (!deveContinuarCartao) break;
+				
+				gerarVariacoesComTema(setup, cartoesNovas, descricoesNovas);
+			}
+			return;
+		}
+		
+		if (setup.getNumeroCartoes() == 0) {
+			while (deveContinuarDescricao) {
+				Set<DescricaoValor> descricoesNovas = new HashSet<>();
+				Set<Cartao> cartoesNovas = new HashSet<>();
+			
+				ContadorDTO contadorDescricaoRetorno = adicionarDescricoes(contadorDescricaoAuxiliar, setup, deveContinuarDescricao, descricoesNovas);
+				deveContinuarDescricao = contadorDescricaoRetorno.getDeveParar();
+				contadorDescricaoAuxiliar = contadorDescricaoRetorno.getContador();
+				
+				if (!deveContinuarDescricao) break;
+
+				gerarVariacoesComTema(setup, cartoesNovas, descricoesNovas);
+
+			}
+			return;
+		}		
+		while (deveContinuarDescricao) {
+			deveContinuarCartao = true;
 			contadorCartao = 0;
 			
-			while (contadorCartao < setup.getCartoes().size() && deveContinuarCartao) {
+			while (deveContinuarCartao) {
 				contadorDescricaoAuxiliar = contadorDescricao;
 
 				Set<DescricaoValor> descricoesNovas = new HashSet<>();
@@ -144,11 +185,8 @@ public class VariacaoModeloServico {
 				contadorCartao = contadorCartaoRetorno.getContador();
 				
 				if (!deveContinuarCartao || !deveContinuarDescricao) break;
-				List<TemaCor> temas = temaCorServico.listarTodos();
-				for (TemaCor tema : temas) {
-					VariacaoModelo novaVariacao = gerarVariacao(setup.getTitulo(), setup.getProduto(), cartoesNovas, descricoesNovas, setup.getModelo(), tema);
-					if (novaVariacao.getChave() != null) setup.getVariacoes().add(novaVariacao);
-				}
+
+				gerarVariacoesComTema(setup, cartoesNovas, descricoesNovas);
 			}
 			
 			contadorDescricao = contadorDescricaoAuxiliar;
@@ -182,22 +220,26 @@ public class VariacaoModeloServico {
 		return new ContadorDTO(contadorCartao, deveContinuarCartao);
 	}
 	
-	public VariacaoModelo gerarVariacao(Titulo titulo, Produto produto, Set<Cartao> cartoes, Set<DescricaoValor> descricoes, Modelo modelo, TemaCor tema) {
-		VariacaoModelo novaVariacao = new VariacaoModelo();
+	public void gerarVariacoesComTema(SetupVariacaoDTO setup, Set<Cartao> cartoes, Set<DescricaoValor> descricoes) {
+		List<TemaCor> temas = temaCorServico.listarTodos();
 		
-		novaVariacao.setTitulo(titulo);
-		novaVariacao.setProduto(produto);
-		novaVariacao.setCartoes(cartoes);
-		novaVariacao.setDescricoes(descricoes);
-		novaVariacao.setModelo(modelo);
-		novaVariacao.setTemaCor(tema);
-		
-		try {
-			novaVariacao.setChave(gerarChave(novaVariacao));
-			novaVariacao.setStatus(StatusEnum.Neutro);
-		} catch (Exception e) {}
-		
-		return novaVariacao;
+		for (TemaCor tema : temas) {
+			VariacaoModelo novaVariacao = new VariacaoModelo();
+			novaVariacao.setTitulo(setup.getTitulo());
+			novaVariacao.setProduto(setup.getProduto());
+			novaVariacao.setCartoes(cartoes);
+			novaVariacao.setDescricoes(descricoes);
+			novaVariacao.setModelo(setup.getModelo());
+			novaVariacao.setTemaCor(tema);
+			
+			try {
+				novaVariacao.setChave(gerarChave(novaVariacao));
+				novaVariacao.setStatus(StatusEnum.Neutro);
+			} catch (Exception e) {}
+			
+			if (novaVariacao.getChave() != null) 
+				setup.getVariacoes().add(novaVariacao);
+		}
 	}
 	
 	public VariacaoModelo encontrarPorId (String chave) {
