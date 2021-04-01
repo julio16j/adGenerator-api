@@ -1,5 +1,6 @@
 package com.adGeneratorApi.Repositorio;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,9 +17,15 @@ import com.adGeneratorApi.Dominio.Entidade.VariacaoModelo;
 public interface AnuncioRepositorio extends JpaRepository<Anuncio, Long> {
 	
 	@Query("SELECT d FROM Anuncio d "
-			+ "WHERE (:variacaoModeloChave IS NULL OR d.variacaoModelo.chave = :chave) "
-			+ "AND (:contaOlxId  IS NULL OR d.contaOlx.id = :contaOlxId) ")
-	public List<Anuncio> findByFilters(@Param("variacaoModeloChave") String variacaoModeloChave, @Param("contaOlxId") Long contaOlxId);
+			+ "WHERE (:variacaoModeloChave IS NULL OR d.variacaoModelo.chave LIKE :variacaoModeloChave || '%') "
+			+ "AND (:contaOlxEmail IS NULL OR d.contaOlx.email LIKE :contaOlxEmail || '%') "
+			+ "AND (d.dataPostado BETWEEN :dataInicial AND :dataFinal) "
+			+ "AND :usuarioId = d.usuarioDivulgador.id")
+	public List<Anuncio> findByFilters(@Param("variacaoModeloChave") String variacaoModeloChave, 
+									   @Param("contaOlxEmail") String contaOlxEmail,
+									   @Param("dataInicial") LocalDateTime dataInicial,
+									   @Param("dataFinal") LocalDateTime dataFinal,
+									   @Param("usuarioId") Long usuarioId);
 	
 	@Query("SELECT count(a.id) from Anuncio a "
 			+ "where a.usuarioDivulgador.id = :usuarioId "

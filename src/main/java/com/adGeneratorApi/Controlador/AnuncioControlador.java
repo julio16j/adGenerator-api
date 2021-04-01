@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adGeneratorApi.Dominio.DTO.AnuncioDTO;
+import com.adGeneratorApi.Dominio.DTO.AtivarAnuncioDTO;
 import com.adGeneratorApi.Dominio.Entidade.Anuncio;
 import com.adGeneratorApi.Servico.AnuncioServico;
 
@@ -48,8 +50,11 @@ public class AnuncioControlador {
 	@GetMapping("filtrar")
 	public ResponseEntity<List<Anuncio>> obterAnuncioPorFiltros(
 			@RequestParam(value="variacaoModeloChave", required=false) String variacaoModeloChave, 
-			@RequestParam(value="contaOlxId", required=false) Long contaOlxId) {
-		return ResponseEntity.ok(servico.encontrarPorFiltros(variacaoModeloChave, contaOlxId));
+			@RequestParam(value="contaOlxEmail", required=false) String contaOlxId,
+			@RequestParam(value="dataInicial", required=false) String dataInicial,
+			@RequestParam(value="dataFinal", required=false) String dataFinal,
+			@RequestParam(value="usuarioId", required=true) Long usuarioId) {
+		return ResponseEntity.ok(servico.encontrarPorFiltros(variacaoModeloChave, contaOlxId, dataInicial, dataFinal, usuarioId));
 	}
 	
 	@Operation(summary = "Criar um novo anuncio")
@@ -57,6 +62,13 @@ public class AnuncioControlador {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Anuncio> criarAnuncio (@RequestBody @Valid AnuncioDTO novoAnuncio) {
 		return ResponseEntity.ok(servico.cadastrarAnuncio(novoAnuncio));
+	}
+	
+	@Operation(summary = "Editar um anuncio")
+	@PutMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Anuncio> ativarAnuncio (@RequestBody @Valid AtivarAnuncioDTO novoAnuncio) {
+		return ResponseEntity.ok(servico.ativarAnuncio(novoAnuncio));
 	}
 	
 	@Operation(summary = "Deletar um anuncio pelo Id")
