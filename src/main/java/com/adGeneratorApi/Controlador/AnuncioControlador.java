@@ -82,4 +82,10 @@ public class AnuncioControlador {
 	public ResponseEntity<Integer> obterTotalAnunciosMes (@PathVariable Long divulgadorId) {
 		return ResponseEntity.ok(servico.obterTotalAnunciosMes(divulgadorId));
 	}
+	
+	@Operation(summary = "Obter total anuncios pelo Email Olx")
+	@GetMapping("/contaOlx/{emailOlx}")
+	public ResponseEntity<Integer> obterAnunciosContaOlx (@PathVariable String emailOlx) {
+		return ResponseEntity.ok(servico.obterTotalAnunciosContaOlx(emailOlx));
+	}
 }

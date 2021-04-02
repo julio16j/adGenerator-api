@@ -35,6 +35,7 @@ public class ContaOlxServico {
 		ContaOlx contaOlxEncontrado = encontrarPorId(dto.getId()) ;
 		contaOlxEncontrado.setSenha(dto.getSenha());
 		contaOlxEncontrado.setEmail(dto.getEmail());
+		contaOlxEncontrado.setUltimaVezUtilizada(dto.getUltimaVezUtilizada());
 		ContaOlx contaOlxSalvo = repositorio.save(contaOlxEncontrado);
 		return contaOlxSalvo;
 	}
@@ -52,6 +53,10 @@ public class ContaOlxServico {
 	public void delete(Long id) {
 		repositorio.deleteById(id);
 		
+	}
+
+	public ContaOlx obterContaOlxDisponivel() {
+		return repositorio.obterContaOlxDisponivel().get(0);
 	}
 	
 	

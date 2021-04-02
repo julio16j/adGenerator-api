@@ -19,4 +19,9 @@ public interface ContaOlxRepositorio extends JpaRepository<ContaOlx, Long> {
 	public List<ContaOlx> findByFilters(@Param("email") String email, @Param("status") StatusUso status);
 	
 	public Optional<ContaOlx> findByEmail (String email);
+
+	@Query("SELECT c from ContaOlx c "
+			+ "where c.status = 'DISPONIVEL' "
+			+ "order by c.ultimaVezUtilizada asc ")
+	public List<ContaOlx> obterContaOlxDisponivel();
 }

@@ -53,5 +53,9 @@ public class AnuncioServico {
 		return repositorio.totalAnuncioPorDia(divulgadorId);
 	}
 	
+	public Integer obterTotalAnunciosContaOlx(String emailOlx) {
+		return repositorio.totalAnuncioPorContaOlx(emailOlx);
+	}
+	
 	
 }

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import com.adGeneratorApi.Dominio.DTO.CartaoDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Cartao implements Serializable{
@@ -25,7 +25,7 @@ public class Cartao implements Serializable{
 	private String caminhoImagem;
 	
 	@ManyToMany(mappedBy = "cartoes")
-	@JsonBackReference
+	@JsonIgnore
 	Set<VariacaoModelo> variacoes;
 	
 	public Cartao() {}

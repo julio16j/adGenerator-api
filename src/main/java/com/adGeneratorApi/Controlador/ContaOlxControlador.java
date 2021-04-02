@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.ContaOlxDTO;
 import com.adGeneratorApi.Dominio.Entidade.ContaOlx;
@@ -70,13 +71,24 @@ public class ContaOlxControlador {
 	
 	@Operation(summary = "Deletar um contaOlx pelo Id")
 	@DeleteMapping("{contaOlxId}")
-	@ResponseStatus(HttpStatus.OK)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> deleteById (@PathVariable Long contaOlxId) {
 		try {
 			servico.delete(contaOlxId);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+	}
+	
+	@Operation(summary = "Obtém uma contaOlx disponível")
+	@GetMapping("disponivel")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<ContaOlx> obterContaOlxDisponivel () {
+		try {
+			return ResponseEntity.ok(servico.obterContaOlxDisponivel());
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
 }

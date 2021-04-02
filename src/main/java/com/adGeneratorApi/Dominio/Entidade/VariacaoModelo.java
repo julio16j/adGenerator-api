@@ -14,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.adGeneratorApi.Dominio.Enum.StatusEnum;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class VariacaoModelo implements Serializable {
@@ -41,7 +40,6 @@ public class VariacaoModelo implements Serializable {
 	private TemaCor temaCor;
 	
 	@ManyToMany
-	@JsonManagedReference
 	@JoinTable(
 			  name = "DescricaoVariacaoModelo", 
 			  joinColumns = @JoinColumn(name = "chaveVariacao"), 
@@ -49,7 +47,6 @@ public class VariacaoModelo implements Serializable {
 	private Set<DescricaoValor> descricoes;
 	
 	@ManyToMany
-	@JsonManagedReference
 	@JoinTable(
 			  name = "CartaoVariacaoModelo", 
 			  joinColumns = @JoinColumn(name = "chaveVariacao"), 
