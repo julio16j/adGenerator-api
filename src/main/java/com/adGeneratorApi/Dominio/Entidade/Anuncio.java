@@ -5,14 +5,18 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import com.adGeneratorApi.Dominio.DTO.AnuncioDTO;
+import com.adGeneratorApi.Dominio.Enum.AnuncioStatus;
 
 @Entity
 public class Anuncio implements Serializable {
@@ -23,17 +27,24 @@ public class Anuncio implements Serializable {
 	private Long id;
 	
 	@OneToOne
+	@NotNull
 	@JoinColumn(name = "variacaoModeloId", referencedColumnName = "chave")
 	private VariacaoModelo variacaoModelo;
 
 	@ManyToOne
+	@NotNull
 	@JoinColumn(name = "usuarioId", referencedColumnName = "id")
 	private Usuario usuarioDivulgador;
 	
 	@ManyToOne
+	@NotNull
 	@JoinColumn(name = "contaOlxId", referencedColumnName = "id")
 	private ContaOlx contaOlx;
 	
+	@Column
+	@Enumerated(EnumType.STRING)
+	private AnuncioStatus status;
+
 	@Column(unique = true, nullable = true)
 	private String link;
 	
@@ -43,9 +54,11 @@ public class Anuncio implements Serializable {
 	public Anuncio () {}
 	
 	public Anuncio (AnuncioDTO dto) {
-		variacaoModelo = dto.getVariacaoModelo();
-		contaOlx = dto.getContaOlx();
-		dataPostado = LocalDateTime.now();
+		this.variacaoModelo = dto.getVariacaoModelo();
+		this.contaOlx = dto.getContaOlx();
+		this.dataPostado = LocalDateTime.now();
+		this.usuarioDivulgador = dto.getUsuarioDivulgador();
+		this.status = AnuncioStatus.Pendente;
 	}
 
 	public Long getId() {
@@ -70,6 +83,14 @@ public class Anuncio implements Serializable {
 
 	public void setContaOlx(ContaOlx contaOlx) {
 		this.contaOlx = contaOlx;
+	}
+	
+	public AnuncioStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(AnuncioStatus status) {
+		this.status = status;
 	}
 
 	public String getLink() {
