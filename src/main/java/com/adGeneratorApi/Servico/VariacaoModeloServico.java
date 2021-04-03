@@ -62,7 +62,7 @@ public class VariacaoModeloServico {
 	public String gerarChave(VariacaoModelo novaVariacao) {
 		String chave = "";
 		chave += novaVariacao.getModelo().getNome();
-		chave += novaVariacao.getProduto().getNome();
+		chave += novaVariacao.getProduto().getTitulo();
 		chave += novaVariacao.getTitulo().getDescricao();
 		chave += novaVariacao.getInvertida();
 		chave += novaVariacao.getTemaCor().getCorFundo();
