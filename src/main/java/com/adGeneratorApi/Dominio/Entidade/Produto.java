@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import com.adGeneratorApi.Dominio.DTO.ProdutoDTO;
 import com.adGeneratorApi.Dominio.Enum.CondicaoProduto;
@@ -27,6 +28,7 @@ public class Produto implements Serializable{
 	private Long id;
 	
 	@Column
+	@NotNull
 	private String titulo;
 	
 	@Column

@@ -41,17 +41,25 @@ public class ProdutoServico {
 	
 	public Produto editarProduto (String produto, MultipartFile imagemProduto) throws Exception {
 		ProdutoDTO dto = MapeadorObjeto.converterStringJson(produto, ProdutoDTO.class);
-		Produto produtoAtual = encontrarPorId(dto.getId());
-		
-		if (produtoAtual == null) throw new RuntimeException("Produto não encontrado");
-		
-		storageServico.deleteFile(produtoAtual.getCaminhoImagem());
-		
-		Produto novoProduto = new Produto(dto);
-		String caminhoImagem = salvarImagem(imagemProduto, dto.getTitulo());
-		novoProduto.setCaminhoImagem(caminhoImagem);
-		Produto produtoSalvo = repositorio.save(novoProduto);
-		return produtoSalvo;
+		Optional<Produto> oldProduto = repositorio.findById(dto.getId());
+		if(oldProduto.isPresent()) {
+			Produto novoProduto = oldProduto.get();
+			storageServico.deleteFile(novoProduto.getCaminhoImagem());
+			String caminhoImagem = salvarImagem(imagemProduto, dto.getTitulo());
+			novoProduto.setId(dto.getId());
+			novoProduto.setTitulo(dto.getTitulo());
+			novoProduto.setDescricao(dto.getDescricao());
+			novoProduto.setCategoria(dto.getCategoria());
+			novoProduto.setSubCategoria(dto.getSubCategoria());
+			novoProduto.setTipo(dto.getTipo());
+			novoProduto.setCep(dto.getCep());
+			novoProduto.setPreco(dto.getPreco());
+			novoProduto.setCondicao(dto.getCondicao());
+			novoProduto.setCaminhoImagem(caminhoImagem);
+			repositorio.save(novoProduto);
+			return novoProduto;
+		} else
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Produto inexistente");
 	}
 
 	private String salvarImagem(MultipartFile imagemProduto, String nome) throws Exception {
