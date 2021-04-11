@@ -11,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.DTO.ProdutoDTO;
+import com.adGeneratorApi.Dominio.Entidade.CodigoProduto;
 import com.adGeneratorApi.Dominio.Entidade.Produto;
+import com.adGeneratorApi.Repositorio.CodigoProdutoRepositorio;
 import com.adGeneratorApi.Repositorio.ProdutoRepositorio;
 import com.adGeneratorApi.Utils.MapeadorObjeto;
 
@@ -22,6 +24,10 @@ public class ProdutoServico {
 	ProdutoRepositorio repositorio;
 	@Autowired
 	StorageServico storageServico;
+	@Autowired
+	CodigoProdutoServico codigoProdutoServico;
+	@Autowired
+	CodigoProdutoRepositorio codigoProdutoRepositorio;
 	
 	public List<Produto> listarTodos () {
 		return repositorio.findAll();
@@ -33,8 +39,14 @@ public class ProdutoServico {
 			throw new RuntimeException("Produto já existente");
 
 		Produto novoProduto = new Produto(dto);
+		
 		String caminhoImagem = salvarImagem(imagemProduto, dto.getTitulo());
 		novoProduto.setCaminhoImagem(caminhoImagem);
+		
+		CodigoProduto codigoProduto = codigoProdutoServico.listarTodosComProdutoNull().get(0);
+		codigoProduto.setProduto(novoProduto);
+		novoProduto.setCodigoProduto(codigoProduto);
+		
 		Produto produtoSalvo = repositorio.save(novoProduto);
 		return produtoSalvo;
 	}

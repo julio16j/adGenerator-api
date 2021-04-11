@@ -9,14 +9,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.adGeneratorApi.Dominio.DTO.ProdutoDTO;
 import com.adGeneratorApi.Dominio.Enum.CondicaoProduto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable{
@@ -57,7 +60,11 @@ public class Produto implements Serializable{
 	private String caminhoImagem;
 	
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Titulo> titulos;
+	
+	@OneToOne(mappedBy = "produto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private CodigoProduto codigoProduto;
 
 	public Produto () {}
 	
@@ -159,6 +166,14 @@ public class Produto implements Serializable{
 
 	public void setTitulos(List<Titulo> titulos) {
 		this.titulos = titulos;
+	}
+	
+	public CodigoProduto getCodigoProduto() {
+		return codigoProduto;
+	}
+
+	public void setCodigoProduto(CodigoProduto codigoProduto) {
+		this.codigoProduto = codigoProduto;
 	}
 
 }

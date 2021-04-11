@@ -7,10 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.adGeneratorApi.Dominio.DTO.CodigoProdutoDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class CodigoProduto implements Serializable {
@@ -25,14 +25,21 @@ public class CodigoProduto implements Serializable {
 	private String codigo;
 	
 	@OneToOne
-	@JoinColumn(name = "produtoId", referencedColumnName = "id")
+	@JsonIgnore
 	private Produto produto;
 
 	public CodigoProduto() {}
 	
 	public CodigoProduto(CodigoProdutoDTO dto) {
 		this.codigo = dto.getCodigo();
-		this.produto = dto.getProduto();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getCodigo() {
