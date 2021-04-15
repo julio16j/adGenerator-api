@@ -1,5 +1,6 @@
 package com.adGeneratorApi.Controlador;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.adGeneratorApi.Dominio.Entidade.Produto;
-import com.adGeneratorApi.Dominio.Enum.CategoriaProduto;
 import com.adGeneratorApi.Servico.ProdutoServico;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,17 +44,17 @@ public class ProdutoControlador {
 	@Operation(summary = "Encontre um produto pelo Id")
 	@GetMapping("{produtoId}")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Produto> obterProdutoPorId (@PathVariable("produtoId") String produtoId) {
+	public ResponseEntity<Produto> obterProdutoPorId (@PathVariable("produtoId") Long produtoId) {
 		return ResponseEntity.ok(servico.encontrarPorId(produtoId));
 	}
 	
 	@Operation(summary = "Encontre produtos por filtros")
 	@GetMapping("filtrar")
 	public ResponseEntity<List<Produto>> obterDescricaoValorPorFiltros(
-			@RequestParam(value = "nome", required = false) String nome,
+			@RequestParam(value = "titulo", required = false) String titulo,
 			@RequestParam(value = "descricao", required = false) String descricao,
-			@RequestParam(value = "categoria", required = false) CategoriaProduto categoria) {
-		return ResponseEntity.ok(servico.encontrarPorFiltros(nome, descricao, categoria));
+			@RequestParam(value = "preco", required = false) BigDecimal preco) {
+		return ResponseEntity.ok(servico.encontrarPorFiltros(titulo, descricao, preco));
 	}
 	
 	@Operation(summary = "Criar um novo produto")
@@ -84,7 +84,7 @@ public class ProdutoControlador {
 	@Operation(summary = "Deletar um produto pelo Id")
 	@DeleteMapping("{produtoId}")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> deleteById (@PathVariable String produtoId) {
+	public ResponseEntity<?> deleteById (@PathVariable Long produtoId) {
 		try {
 			servico.delete(produtoId);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

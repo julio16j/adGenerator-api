@@ -15,8 +15,9 @@ public interface VariacaoModeloRepositorio extends JpaRepository<VariacaoModelo,
 	@Query("Select variacao from VariacaoModelo variacao where "
 			+ "(:modeloId is null or variacao.modelo.nome like '%' || :modeloId || '%') and "
 			+ "(:tituloId is null or variacao.titulo.descricao like '%' || :tituloId || '%') and "
-			+ "(:produtoId is null or variacao.produto.nome like '%' || :produtoId || '%') ")
-	public Page<VariacaoModelo> filtrarPaginado ( @Param("modeloId") String modeloId,
-			@Param("tituloId") String tituloId, @Param("produtoId") String produtoId,
-			Pageable page);
+			+ "(:produtoTitulo is null or variacao.produto.titulo like '%' || :produtoTitulo || '%') ")
+	public Page<VariacaoModelo> filtrarPaginado (@Param("modeloId") String modeloId,
+												 @Param("tituloId") String tituloId, 
+												 @Param("produtoTitulo") String produtoTitulo,
+												 Pageable page);
 }

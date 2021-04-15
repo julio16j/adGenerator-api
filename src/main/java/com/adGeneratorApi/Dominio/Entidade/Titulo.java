@@ -26,9 +26,8 @@ public class Titulo implements Serializable {
 	private Tamanho tamanho;
 	
 	@ManyToOne
-	@JoinColumn(name = "nome")
+	@JoinColumn(name = "id")
 	private Produto produto;
-	
 	
 	public Titulo () {}
 	

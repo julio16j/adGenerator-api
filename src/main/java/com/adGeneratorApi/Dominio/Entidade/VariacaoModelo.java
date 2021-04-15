@@ -28,7 +28,7 @@ public class VariacaoModelo implements Serializable {
 	private Modelo modelo;
 	
 	@ManyToOne
-	@JoinColumn(name = "produtoId", referencedColumnName = "nome")
+	@JoinColumn(name = "produtoId", referencedColumnName = "id")
 	private Produto produto;
 	
 	@ManyToOne

@@ -9,7 +9,7 @@ public class TituloDTO implements Serializable {
 	private static final long serialVersionUID = 5479812992182441322L;
 	private String descricao;
 	private Tamanho tamanho;
-	private String produtoId;
+	private Long produtoId;
 	
 	public String getDescricao() {
 		return descricao;
@@ -23,10 +23,10 @@ public class TituloDTO implements Serializable {
 	public void setTamanho(Tamanho tamanho) {
 		this.tamanho = tamanho;
 	}
-	public String getProdutoId() {
+	public Long getProdutoId() {
 		return produtoId;
 	}
-	public void setProdutoId(String produtoId) {
+	public void setProdutoId(Long produtoId) {
 		this.produtoId = produtoId;
 	}
 	@Override
