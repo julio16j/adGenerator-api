@@ -47,6 +47,15 @@ public class VariacaoModeloControlador {
 		return ResponseEntity.ok(servico.filtrar(modeloId, produtoId, tituloId, page, size));
 	}
 	
+	@Operation(summary = "Filtrar Todos")
+	@GetMapping("semAnuncio")
+	public ResponseEntity<Page<VariacaoModelo>> listarVariacaoSemAnuncio (
+			@RequestParam(value="produtoId", required=false) String produtoId,
+			@RequestParam(value="page", required=true) Integer page,
+			@RequestParam(value="size", required=true) Integer size) {
+		return ResponseEntity.ok(servico.findVariacaoSemAnuncio(produtoId, page, size));
+	}
+	
 	@Operation(summary = "Encontrar por Id")
 	@GetMapping("{chave}")
 	public ResponseEntity<VariacaoModelo> encontrarPorId(@PathVariable("chave") String chave) {

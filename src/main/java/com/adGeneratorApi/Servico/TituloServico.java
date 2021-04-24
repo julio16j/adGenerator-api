@@ -46,8 +46,8 @@ public class TituloServico {
 		return tituloSalvo;
 	}
 
-	public List<Titulo> encontrarPorFiltros(String descricao, Tamanho tamanho, Produto produto) {
-		return repositorio.findByFilters(descricao, tamanho, produto);
+	public List<Titulo> encontrarPorFiltros(String descricao, Tamanho tamanho, String produtoTitulo) {
+		return repositorio.findByFilters(descricao, tamanho, produtoTitulo);
 	}
 
 	public Titulo encontrarPorId(String tituloId) {

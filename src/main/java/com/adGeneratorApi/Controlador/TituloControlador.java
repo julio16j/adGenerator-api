@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adGeneratorApi.Dominio.DTO.TituloDTO;
-import com.adGeneratorApi.Dominio.Entidade.Produto;
 import com.adGeneratorApi.Dominio.Entidade.Titulo;
 import com.adGeneratorApi.Dominio.Enum.Tamanho;
 import com.adGeneratorApi.Servico.TituloServico;
@@ -51,7 +50,7 @@ public class TituloControlador {
 	public ResponseEntity<List<Titulo>> obterDescricaoValorPorFiltros(
 			@RequestParam(value = "descricao", required = false) String descricao,
 			@RequestParam(value = "tamanho", required = false) Tamanho tamanho,
-			@RequestParam(value = "produto", required = false) Produto produto) {
+			@RequestParam(value = "produto", required = false) String produto) {
 		return ResponseEntity.ok(servico.encontrarPorFiltros(descricao, tamanho, produto));
 	}
 

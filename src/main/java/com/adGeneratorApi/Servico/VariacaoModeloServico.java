@@ -95,7 +95,7 @@ public class VariacaoModeloServico {
 			Integer numeroCartoes = modelo.getCartoes().size();
 			
 			for (Produto produto : produtos) {
-				List<Titulo> titulosProduto = tituloServico.encontrarPorFiltros(null, null, produto);
+				List<Titulo> titulosProduto = tituloServico.encontrarPorFiltros(null, null, produto.getTitulo());
 				
 				for (Titulo titulo : titulosProduto) {					
 					gerarTodasVariacoes(new SetupVariacaoDTO(variacoes, descricoes, cartoes, modelo, 
@@ -104,7 +104,7 @@ public class VariacaoModeloServico {
 			}
 		}
 		List<VariacaoModelo> copiaVariacoes = gerarVariacoesInvertidas(variacoes);
-		repositorio.saveAll(copiaVariacoes);	
+		repositorio.saveAll(copiaVariacoes);
 	}
 	private List<VariacaoModelo> gerarVariacoesInvertidas(List<VariacaoModelo> variacoes) {
 		List<VariacaoModelo> copiaVariacoes = new ArrayList<>(variacoes);
@@ -251,7 +251,12 @@ public class VariacaoModeloServico {
 
 	public Page<VariacaoModelo> filtrar(String modeloId, String produtoId, String tituloId, Integer pagina, Integer tamanho) {
 		Pageable paginavel = PageRequest.of(pagina, tamanho);
-		return repositorio.filtrarPaginado(modeloId, produtoId, tituloId, paginavel);
+		return repositorio.filtrarPaginado(modeloId, tituloId, produtoId, paginavel);
+	}
+	
+	public Page<VariacaoModelo> findVariacaoSemAnuncio(String produtoId, Integer pagina, Integer tamanho) {
+		Pageable paginavel = PageRequest.of(pagina, tamanho);
+		return repositorio.findVariacaoSemAnuncio(produtoId, paginavel);
 	}
 	
 	public void deleteAll() {
