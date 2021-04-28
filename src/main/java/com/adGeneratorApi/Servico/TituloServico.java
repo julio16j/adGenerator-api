@@ -30,7 +30,7 @@ public class TituloServico {
 	public Titulo cadastrartitulo(TituloDTO dto) {
 		if (repositorio.findById(dto.getDescricao()).isPresent())
 			throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED ,"titulo já existente");
-		Produto produtoEncontrado = produtoServico.encontrarPorId(dto.getProdutoId());
+		Produto produtoEncontrado = produtoServico.encontrarPorTitulo(dto.getProdutoTitulo());
 		Titulo novoTitulo = new Titulo(dto);
 		novoTitulo.setProduto(produtoEncontrado);
 		Titulo tituloSalvo = repositorio.save(novoTitulo);
@@ -40,7 +40,7 @@ public class TituloServico {
 	public Titulo editartitulo(TituloDTO dto) {
 		encontrarPorId(dto.getDescricao());
 		Titulo novoTitulo = new Titulo(dto);
-		Produto produtoEncontrado = produtoServico.encontrarPorId(dto.getProdutoId());
+		Produto produtoEncontrado = produtoServico.encontrarPorTitulo(dto.getProdutoTitulo());
 		novoTitulo.setProduto(produtoEncontrado);
 		Titulo tituloSalvo = repositorio.save(novoTitulo);
 		return tituloSalvo;

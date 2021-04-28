@@ -9,7 +9,7 @@ public class TituloDTO implements Serializable {
 	private static final long serialVersionUID = 5479812992182441322L;
 	private String descricao;
 	private Tamanho tamanho;
-	private Long produtoId;
+	private String produtoTitulo;
 	
 	public String getDescricao() {
 		return descricao;
@@ -23,15 +23,15 @@ public class TituloDTO implements Serializable {
 	public void setTamanho(Tamanho tamanho) {
 		this.tamanho = tamanho;
 	}
-	public Long getProdutoId() {
-		return produtoId;
+	public String getProdutoTitulo() {
+		return produtoTitulo;
 	}
-	public void setProdutoId(Long produtoId) {
-		this.produtoId = produtoId;
+	public void setProdutoId(String produtoTitulo) {
+		this.produtoTitulo = produtoTitulo;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(descricao, produtoId, tamanho);
+		return Objects.hash(descricao, produtoTitulo, tamanho);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -42,7 +42,7 @@ public class TituloDTO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		TituloDTO other = (TituloDTO) obj;
-		return Objects.equals(descricao, other.descricao) && Objects.equals(produtoId, other.produtoId)
+		return Objects.equals(descricao, other.descricao) && Objects.equals(produtoTitulo, other.produtoTitulo)
 				&& tamanho == other.tamanho;
 	}
 }
