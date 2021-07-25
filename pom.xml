@@ -115,7 +115,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>ad-generator-api/adGeneratorApi</repository>
+					<repository>ad-generator-api/ad_generator_api</repository>
 					<tag>${project.version}</tag>
 				</configuration>
 				<dependencies>
